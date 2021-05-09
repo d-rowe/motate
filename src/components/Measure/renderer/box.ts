@@ -18,10 +18,10 @@ class Box {
         this.width = options.width || 0;
         this.height = options.height || 0;
     }
-    setX(x: number) {this.x = x;}
-    setY(y: number) {this.y = y;}
-    setWidth(width: number) {this.width = width;}
-    setHeight(height: number) {this.height = height;}
+    setX(x: NumberOrString) {this.x = x;}
+    setY(y: NumberOrString) {this.y = y;}
+    setWidth(width: NumberOrString) {this.width = width;}
+    setHeight(height: NumberOrString) {this.height = height;}
     getX(): NumberOrString {return this.x;}
     getY(): NumberOrString {return this.y;}
     getWidth(): NumberOrString {return this.width;}
