@@ -9,6 +9,7 @@ export type Props = {
     height: number,
     width: number,
     isSelected?: boolean;
+    hasBegBarline?: boolean;
 }
 
 class Measure extends PureComponent<Props> {
@@ -26,12 +27,14 @@ class Measure extends PureComponent<Props> {
             showClef,
             isSelected,
             width,
+            hasBegBarline = true,
         } = this.props;
         this.renderer = new Renderer(this.container, {
             width,
             clefType: clefType || DEFAULT_CLEF_TYPE,
             isSelected,
             showClef,
+            hasBegBarline,
         });
         this.renderNotation();
     }
@@ -45,13 +48,16 @@ class Measure extends PureComponent<Props> {
             isSelected,
             showClef,
             width,
+            hasBegBarline = true,
         } = this.props;
+        // TODO: just update whole config object at once
         this.renderer.setClefType(clefType || DEFAULT_CLEF_TYPE);
         if (width !== undefined) {
             this.renderer.setWidth(width);
         }
         this.renderer.setIsSelected(!!isSelected);
         this.renderer.setShowClef(!!showClef);
+        this.renderer.setHasBegBarline(hasBegBarline);
         
         this.renderNotation();
     }

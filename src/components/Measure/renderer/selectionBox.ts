@@ -66,7 +66,8 @@ class SelectionBox extends Box {
         }
 
         this.rect.setAttribute('fill-opacity', '1');
-        this.rect.setAttribute('stroke-opacity', '1');
+        // this.rect.setAttribute('stroke-opacity', '1');
+        this.rect.setAttribute('stroke-opacity', '0');
     }
 
     setBackgroundColor(color: string = DEFAULT_BACKGROUND_COLOR) {

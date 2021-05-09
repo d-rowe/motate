@@ -8,6 +8,7 @@ type Config = {
     width?: number,
     clefType?: string,
     showClef?: boolean;
+    hasBegBarline?: boolean;
 };
 
 class Renderer {
@@ -38,6 +39,10 @@ class Renderer {
         this.config.showClef = showClef;
     }
 
+    setHasBegBarline(hasBegBarline: boolean) {
+        this.config.hasBegBarline = hasBegBarline;
+    }
+
     private formatSvg(): void {
         // @ts-ignore
         const {svg} = this.context || {};
@@ -55,6 +60,9 @@ class Renderer {
         this.vexRenderer = new Vex.Flow.Renderer(this.container, RENDERER_BACKEND);
         this.context = this.vexRenderer.getContext();
         this.stave = new Vex.Flow.Stave(0, 0, (this.config.width|| 0) - 1);
+        if (!this.config.hasBegBarline) {
+            this.stave.setBegBarType(Vex.Flow.Barline.type.NONE);
+        }
         if (this.config.showClef) {
             try {
                 this.stave.addClef(this.config.clefType || '');
