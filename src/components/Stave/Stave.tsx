@@ -10,6 +10,8 @@ export type Props = {
 class Stave extends PureComponent<Props> {
     render() {
         const {clef, measures, selectedMeasure} = this.props;
+        // TODO: measures should be array of Objects
+        // this is just for initial PoC
         const m = [];
         for (let i = 0; i < measures; i++) {
             m.push(
@@ -20,6 +22,7 @@ class Stave extends PureComponent<Props> {
                     hasBegBarline={i === 0}
                     clefType={clef}
                     isSelected={i === selectedMeasure}
+                    key={i}
                 />
             )
         }
