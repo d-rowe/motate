@@ -18,9 +18,16 @@ class Left extends PureComponent<Props> {
                 margin: '42px 0',
                 textAlign: 'right',
                 borderRight: '4px solid black',
-                lineHeight: 0.5
+                
             }}>
-                {staves.map(({name}, i) => <p key={i}>{name}</p>)}
+                {staves.map(({name}, i) => (
+                    <p
+                        style={{margin: '10px 0 12px'}}
+                        key={i}
+                    >
+                        {name}
+                    </p>
+                ))}
             </div>
         );
     }
