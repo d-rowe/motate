@@ -1,5 +1,8 @@
 import React, {PureComponent} from 'react';
+import {CLEFS} from '../../constants';
 import Measure from '../Measure';
+
+const DEFAULT_CLEF = CLEFS.TREBLE;
 
 export type Props = {
     measures: number,
@@ -20,7 +23,7 @@ class Stave extends PureComponent<Props> {
                     height={125}
                     width={200}
                     hasBegBarline={false}
-                    clefType={clef}
+                    clefType={clef  || DEFAULT_CLEF}
                     isSelected={i === selectedMeasure}
                     key={i}
                 />
