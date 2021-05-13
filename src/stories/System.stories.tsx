@@ -27,6 +27,10 @@ Default.args = {
         {
             name: 'Trombone',
             clef: CLEFS.BASS
+        },
+        {
+            name: 'Percussion',
+            clef: CLEFS.PERCUSSION,
         }
     ],
     selectedMeasure: 0

@@ -14,8 +14,11 @@ class Left extends PureComponent<Props> {
                 flexDirection: 'column',
                 justifyItems: 'stretch',
                 justifyContent: 'space-between',
-                padding: '40px 10px',
+                padding: '0 12px',
+                margin: '42px 0',
                 textAlign: 'right',
+                borderRight: '4px solid black',
+                lineHeight: 0.5
             }}>
                 {staves.map(({name}, i) => <p key={i}>{name}</p>)}
             </div>

@@ -19,7 +19,7 @@ class Stave extends PureComponent<Props> {
                     showClef={i === 0}
                     height={125}
                     width={200}
-                    hasBegBarline={i === 0}
+                    hasBegBarline={false}
                     clefType={clef}
                     isSelected={i === selectedMeasure}
                     key={i}

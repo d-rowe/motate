@@ -49,8 +49,6 @@ class Renderer {
         if (!svg) {
             throw new Error('Cannot format SVG before it has been constructed');
         }
-        const {width} = this.config;
-        svg.setAttribute('viewBox', `0 0 ${width} 125`);
         svg.setAttribute('style', 'width: 100%; height: 100%');
     }
 
@@ -59,7 +57,7 @@ class Renderer {
         const vexContainer = document.createDocumentFragment();
         this.vexRenderer = new Vex.Flow.Renderer(this.container, RENDERER_BACKEND);
         this.context = this.vexRenderer.getContext();
-        this.stave = new Vex.Flow.Stave(0, 0, (this.config.width|| 0) - 1);
+        this.stave = new Vex.Flow.Stave(0, 2.5, (this.config.width|| 0) - 1);
         if (!this.config.hasBegBarline) {
             this.stave.setBegBarType(Vex.Flow.Barline.type.NONE);
         }
