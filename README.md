@@ -1,6 +1,6 @@
 # motate
 music notation rendering engine in React
-![](https://i.imgur.com/vaapkzh.png)
+![](https://i.imgur.com/7I142lG.png)
 
 # setup
 1. Install dependencies
