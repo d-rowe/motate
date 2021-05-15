@@ -5,14 +5,20 @@ import Measure from '../Measure';
 const DEFAULT_CLEF = CLEFS.TREBLE;
 
 export type Props = {
+    name?: string,
+    clef?: string,
     measures: number,
-    clef: string,
     selectedMeasure: number,
 };
 
 class Stave extends PureComponent<Props> {
     render() {
-        const {clef, measures, selectedMeasure} = this.props;
+        const {
+            name,
+            clef,
+            measures,
+            selectedMeasure
+        } = this.props;
         // TODO: measures should be array of Objects
         // this is just for initial PoC
         const m = [];
@@ -30,7 +36,10 @@ class Stave extends PureComponent<Props> {
             )
         }
         return (
-            <div style={{display: 'flex'}}>
+            <div
+                aria-label={`${name} stave`}
+                style={{display: 'flex'}}
+            >
                 {m}
             </div>
         );

@@ -4,7 +4,7 @@ import Stave from '../Stave';
 import type {StaveOptions} from './constants';
 
 export type Props = {
-    measures: numberr,
+    measures: number,
     staves: StaveOptions[],
     selectedMeasure: number,
 };
@@ -22,10 +22,11 @@ class System extends PureComponent<Props> {
                 <div>
                     {staves.map(({name, clef}, i) => (
                         <Stave
-                        measures={measures}
-                        clef={clef}
-                        selectedMeasure={selectedMeasure}
-                        key={i}
+                            name={name}
+                            measures={measures}
+                            clef={clef}
+                            selectedMeasure={selectedMeasure}
+                            key={i}
                         />
                     ))}
                 </div>
