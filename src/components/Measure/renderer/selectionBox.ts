@@ -94,7 +94,7 @@ class SelectionBox extends Box {
         }
     }
 
-    setBBox(bbox: BBox): void {
+    setBBox(bbox: BBox) {
         Object
             .entries(bbox)
             .forEach(([prop, val]) => {

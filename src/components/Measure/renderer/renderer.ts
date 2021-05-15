@@ -1,4 +1,4 @@
-import Vex, { IRenderContext } from 'vexflow';
+import Vex, {IRenderContext} from 'vexflow';
 import SelectionBox from './selectionBox';
 
 const RENDERER_BACKEND = Vex.Flow.Renderer.Backends.SVG;
@@ -8,85 +8,75 @@ type Config = {
     width?: number,
     clefType?: string,
     showClef?: boolean;
+    timeSignature?: string;
+    showTimeSignature?: boolean;
     hasBegBarline?: boolean;
 };
 
-class Renderer {
-    private container: HTMLDivElement;
-    private config: Config;
-    private context?: IRenderContext;
-    private stave?: Vex.Flow.Stave;
-    private vexRenderer?: Vex.Flow.Renderer;
-    
-    constructor(container: HTMLDivElement, config: Config) {
-        this.container = container;
-        this.config = config;
-    }
+function renderer(container: HTMLDivElement, config: Config) {
+    let stave: Vex.Flow.Stave;
+    let staveContext: IRenderContext;
 
-    setWidth(width: number) {
-        this.config.width = width;
-    }
+    render();
 
-    setIsSelected(isSelected: boolean) {
-        this.config.isSelected = isSelected;
-    }
-
-    setClefType(clefType: string) {
-        this.config.clefType = clefType;
-    }
-
-    setShowClef(showClef: boolean) {
-        this.config.showClef = showClef;
-    }
-
-    setHasBegBarline(hasBegBarline: boolean) {
-        this.config.hasBegBarline = hasBegBarline;
-    }
-
-    private formatSvg(): void {
-        // @ts-ignore
-        const {svg} = this.context || {};
-        if (!svg) {
-            throw new Error('Cannot format SVG before it has been constructed');
-        }
-        svg.setAttribute('style', 'width: 100%; height: 100%');
-    }
-
-    render(): void {
-        this.dispose();
+    function render() {
+        const {
+            clefType,
+            showClef,
+            timeSignature,
+            showTimeSignature,
+            hasBegBarline,
+            width = 0,
+        } = config;
+        dispose();
         const vexContainer = document.createDocumentFragment();
-        this.vexRenderer = new Vex.Flow.Renderer(this.container, RENDERER_BACKEND);
-        this.context = this.vexRenderer.getContext();
-        this.stave = new Vex.Flow.Stave(0, 2.5, (this.config.width|| 0) - 1);
-        if (!this.config.hasBegBarline) {
-            this.stave.setBegBarType(Vex.Flow.Barline.type.NONE);
+        const vexRenderer = new Vex.Flow.Renderer(container, RENDERER_BACKEND);
+        staveContext = vexRenderer.getContext();
+        stave = new Vex.Flow.Stave(0, 2.5, width - 1);
+        if (showClef && clefType) {
+            renderClef(clefType);
         }
-        if (this.config.showClef) {
-            try {
-                this.stave.addClef(this.config.clefType || '');
-            } catch {
-                console.warn('Unsupported clef type:', this.config.clefType);
-            }
+        if (showTimeSignature && timeSignature) {
+            renderTimeSignature(timeSignature);
         }
-        this.stave.setContext(this.context);
-        this.stave.draw();
-        this.renderSelectionBox();
-        this.formatSvg();
-        this.container.appendChild(vexContainer);
+        if (!hasBegBarline) {
+            stave.setBegBarType(Vex.Flow.Barline.type.NONE);
+        }
+        stave.setContext(staveContext);
+        stave.draw();
+        renderSelectionBox();
+        formatSvg();
+        container.appendChild(vexContainer);
     }
 
-    renderSelectionBox() {
-        if (!this.stave) {
+    function renderClef(clefType: string) {
+        try {
+            stave?.addClef(clefType);
+        } catch {
+            console.warn('Unsupported clef type:', clefType);
+        }  
+    }
+
+    function renderTimeSignature(timeSignature: string) {
+        try {
+            stave?.addTimeSignature(timeSignature);
+        } catch {
+            console.warn('Unsupported time signature:', timeSignature)
+        }
+    }
+
+    function renderSelectionBox() {
+        if (!stave) {
             return;
         }
         const paddingLeft = 5;
         const paddingRight = 10;
-        const startX = this.stave.getNoteStartX() + paddingLeft;
-        const selectionWidth = this.stave.getWidth() - startX - paddingRight;
-        if (this.config.isSelected) {
+        const startX = stave.getNoteStartX() + paddingLeft;
+        const selectionWidth = stave.getWidth() - startX - paddingRight;
+        if (config.isSelected) {
             new SelectionBox({
                 // @ts-ignore
-                svg: this.context.svg,
+                svg: staveContext.svg,
                 x: startX,
                 y: 0,
                 width: selectionWidth,
@@ -95,9 +85,18 @@ class Renderer {
         }
     }
 
-    dispose(): void {
-        this.container.innerHTML = '';
+    function formatSvg() {
+        // @ts-ignore
+        const {svg} = staveContext || {};
+        if (!svg) {
+            throw new Error('Cannot format SVG before it has been constructed');
+        }
+        svg.setAttribute('style', 'width: 100%; height: 100%');
+    }
+
+    function dispose() {
+        container.innerHTML = '';
     }
 }
 
-export default Renderer;
+export default renderer;
