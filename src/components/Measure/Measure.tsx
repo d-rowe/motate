@@ -44,6 +44,18 @@ class Measure extends PureComponent<Props, State> {
         this.renderNotation();
     }
 
+    shouldComponentUpdate(nextProps: Props, nextState: State) {
+        if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+            return true;
+        }
+
+        if (nextState.minWidth !== this.state.minWidth) {
+            return true;
+        }
+        
+        return false;
+    }
+
     render(): ReactChild {
         const {minWidth} = this.state;
         return <div

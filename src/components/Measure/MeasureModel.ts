@@ -87,8 +87,7 @@ class MeasureModel {
         const voiceWidth = this.formatter.getMinTotalWidth() * 2.5;
         this.minWidth = this.stave.getNoteStartX() + voiceWidth;
         this.stave.setWidth(this.minWidth);
-        this.formatter.preCalculateMinTotalWidth(voices);
-        this.formatter.format([this.voice], voiceWidth);
+        this.formatter.format(voices, voiceWidth);
     }
 
     private setBarlines() {
