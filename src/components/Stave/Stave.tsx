@@ -26,12 +26,15 @@ class Stave extends PureComponent<Props> {
         // this is just for initial PoC
         const m = [];
         for (let i = 0; i < measures; i++) {
+            const isFirstMeasure = i === 0;
+            const isLastMeasure = i === measures - 1;
             m.push(
                 <Measure
-                    showClef={i === 0}
+                    showClef={isFirstMeasure}
+                    showTimeSignature={isFirstMeasure}
                     width={200}
                     hasBegBarline={hasBegBarline}
-                    hasEndBarline={!(!hasEndBarline && i === measures - 1)}
+                    hasEndBarline={!(isLastMeasure && !hasEndBarline)}
                     clefType={clef}
                     key={i}
                     notes={measureNotes[i]}

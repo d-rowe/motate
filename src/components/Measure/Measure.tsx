@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactChild} from 'react';
-import constructVexModel from './constructVexModel';
+import MeasureModel from './MeasureModel';
 import renderer from './renderer';
 
 import type {Note} from '../../constants';
@@ -25,6 +25,11 @@ class Measure extends PureComponent<Props, State> {
     private ref = React.createRef<HTMLDivElement>();
     private container?: HTMLDivElement | null;
     state: State = {};
+    static defaultProps = {
+        hasBegBarline: true,
+        hasEndBarline: true,
+        showClef: true,
+    };
 
     componentDidMount() {
         this.container = this.ref.current;
@@ -51,15 +56,11 @@ class Measure extends PureComponent<Props, State> {
     }
 
     static getDerivedStateFromProps(props: Props) {
-        const {
-            voice,
-            stave,
-            minWidth,
-        } = constructVexModel(props);
+        const measureModel = new MeasureModel(props);
         return {
-            voice,
-            stave,
-            minWidth,
+            voice: measureModel.getVoice(),
+            stave: measureModel.getStave(),
+            minWidth: measureModel.getMinWidth(),
         };  
     }
 
