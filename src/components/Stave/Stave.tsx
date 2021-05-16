@@ -1,14 +1,15 @@
 import React, {PureComponent} from 'react';
-import {CLEFS} from '../../constants';
 import Measure from '../Measure';
 
-const DEFAULT_CLEF = CLEFS.TREBLE;
+import type {Note} from '../../constants';
 
 export type Props = {
     name?: string,
     clef?: string,
     measures: number,
     hasBegBarline?: boolean,
+    hasEndBarline?: boolean,
+    measureNotes?: Array<Note[]>,
 };
 
 class Stave extends PureComponent<Props> {
@@ -18,6 +19,8 @@ class Stave extends PureComponent<Props> {
             clef,
             measures,
             hasBegBarline = true,
+            hasEndBarline = true,
+            measureNotes = [],
         } = this.props;
         // TODO: measures should be array of Objects
         // this is just for initial PoC
@@ -28,8 +31,10 @@ class Stave extends PureComponent<Props> {
                     showClef={i === 0}
                     width={200}
                     hasBegBarline={hasBegBarline}
-                    clefType={clef  || DEFAULT_CLEF}
+                    hasEndBarline={!(!hasEndBarline && i === measures - 1)}
+                    clefType={clef}
                     key={i}
+                    notes={measureNotes[i]}
                 />
             )
         }

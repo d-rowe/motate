@@ -2,7 +2,7 @@
 Music notation rendering engine in React. It's built off of [VexFlow](https://github.com/0xfe/vexflow).
 
 # Screenshot
-![](https://i.imgur.com/1fn2My0.png)
+![](https://i.imgur.com/3S3nP9U.png)
 
 # Setup
 1. Install dependencies
