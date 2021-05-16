@@ -44,7 +44,7 @@ function constructVexModel(config: Config): VexModel {
     const voice = new Vex.Flow.Voice({num_beats: 4, beat_value: 4});
     setBarlines();
     voice.addTickables(vexNotes);
-    let minWidth = stave.getWidth();;
+    let minWidth = stave.getWidth();
     const formatter = new Vex.Flow.Formatter();
 
     const voices = [voice];
