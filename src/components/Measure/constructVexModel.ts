@@ -7,8 +7,7 @@ const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = Vex.Flow.Barline.type.NONE;
 
-type RenderContext = {
-    formatter: Vex.Flow.Formatter,
+type VexModel = {
     stave: Vex.Flow.Stave,
     voice: Vex.Flow.Voice,
     minWidth: number,
@@ -25,7 +24,7 @@ type Config = {
     notes?: Note[],
 };
 
-function constructVexModel(config: Config): RenderContext {
+function constructVexModel(config: Config): VexModel {
     const {
         clefType = DEFAULT_CLEF_TYPE,
         timeSignature = DEFAULT_TIME_SIGNATURE,
@@ -59,7 +58,6 @@ function constructVexModel(config: Config): RenderContext {
     }
 
     return {
-        formatter,
         stave,
         voice,
         minWidth,
