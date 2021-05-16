@@ -1,6 +1,6 @@
 import React from 'react';
 import Stave, {Props} from '../components/Stave';
-import { Story, Meta } from '@storybook/react';
+import {Story, Meta} from '@storybook/react';
 
 
 export default {

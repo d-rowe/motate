@@ -1,7 +1,7 @@
 import React from 'react';
 import System, {Props} from '../components/System';
 import {CLEFS} from '../constants';
-import { Story, Meta } from '@storybook/react';
+import {Story, Meta} from '@storybook/react';
 
 
 export default {

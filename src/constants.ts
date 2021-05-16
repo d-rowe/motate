@@ -11,3 +11,8 @@ export const CLEFS = {
     BASS,
     PERCUSSION,
 };
+
+export type Note = {
+    keys: string[],
+    duration: string,
+};

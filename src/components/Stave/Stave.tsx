@@ -8,7 +8,7 @@ export type Props = {
     name?: string,
     clef?: string,
     measures: number,
-    selectedMeasure: number,
+    hasBegBarline?: boolean,
 };
 
 class Stave extends PureComponent<Props> {
@@ -17,7 +17,7 @@ class Stave extends PureComponent<Props> {
             name,
             clef,
             measures,
-            selectedMeasure
+            hasBegBarline = true,
         } = this.props;
         // TODO: measures should be array of Objects
         // this is just for initial PoC
@@ -26,11 +26,9 @@ class Stave extends PureComponent<Props> {
             m.push(
                 <Measure
                     showClef={i === 0}
-                    height={125}
                     width={200}
-                    hasBegBarline={false}
+                    hasBegBarline={hasBegBarline}
                     clefType={clef  || DEFAULT_CLEF}
-                    isSelected={i === selectedMeasure}
                     key={i}
                 />
             )

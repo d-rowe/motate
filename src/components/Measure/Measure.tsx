@@ -1,22 +1,30 @@
 import React, {PureComponent, ReactChild} from 'react';
+import constructVexModel from './constructVexModel';
 import renderer from './renderer';
 
-const DEFAULT_CLEF_TYPE = 'treble';
+import type {Note} from '../../constants';
 
 export type Props = {
     clefType?: string;
     showClef?: boolean;
     timeSignature?: string;
     showTimeSignature?: boolean;
-    height: number,
     width: number,
-    isSelected?: boolean;
-    hasBegBarline?: boolean;
+    hasBegBarline?: boolean,
+    hasEndBarline?: boolean,
+    notes?: Note[],
 }
 
-class Measure extends PureComponent<Props> {
+type State = {
+    stave?: Vex.Flow.Stave,
+    voice?: Vex.Flow.Voice,
+    minWidth?: number,
+};
+
+class Measure extends PureComponent<Props, State> {
     private ref = React.createRef<HTMLDivElement>();
     private container?: HTMLDivElement | null;
+    state: State = {};
 
     componentDidMount() {
         this.container = this.ref.current;
@@ -32,37 +40,38 @@ class Measure extends PureComponent<Props> {
     }
 
     render(): ReactChild {
-        const {width, height} = this.props;
+        const {minWidth} = this.state;
         return <div
             ref={this.ref}
-            style={{width, height}}
+            style={{
+                width: `${minWidth}px`,
+                height: '125px',
+            }}
         />;
+    }
+
+    static getDerivedStateFromProps(props: Props) {
+        const {
+            voice,
+            stave,
+            minWidth,
+        } = constructVexModel(props);
+        return {
+            voice,
+            stave,
+            minWidth,
+        };  
     }
 
     renderNotation() {
         if (!this.container) {
+            throw new Error('Cannot render notation before container is initialized');
+        }
+        const {stave, voice} = this.state;
+        if (!stave || !voice) {
             return;
         }
-
-        const {
-            clefType,
-            showClef,
-            timeSignature,
-            showTimeSignature,
-            isSelected,
-            width,
-            hasBegBarline = true,
-        } = this.props;
-
-        renderer(this.container, {
-            clefType: clefType || DEFAULT_CLEF_TYPE,
-            showClef,
-            timeSignature,
-            showTimeSignature,
-            isSelected,
-            width,
-            hasBegBarline,
-        });
+        renderer(this.container, {stave, voice});
     }
 }
 

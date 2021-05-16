@@ -14,7 +14,6 @@ class System extends PureComponent<Props> {
         const {
             staves,
             measures,
-            selectedMeasure
         } = this.props;
         return (
             <div style={{display: 'flex'}}>
@@ -25,7 +24,7 @@ class System extends PureComponent<Props> {
                             name={name}
                             measures={measures}
                             clef={clef}
-                            selectedMeasure={selectedMeasure}
+                            hasBegBarline={false}
                             key={i}
                         />
                     ))}
