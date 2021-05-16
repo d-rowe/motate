@@ -13,13 +13,18 @@ export type Props = {
 };
 
 class Stave extends PureComponent<Props> {
+    static defaultProps = {
+        hasBegBarline: true,
+        hasEndBarline: true,
+    };
+
     render() {
         const {
             name,
             clef,
             measures,
-            hasBegBarline = true,
-            hasEndBarline = true,
+            hasBegBarline,
+            hasEndBarline,
             measureNotes = [],
         } = this.props;
         // TODO: measures should be array of Objects
@@ -33,7 +38,7 @@ class Stave extends PureComponent<Props> {
                     showClef={isFirstMeasure}
                     showTimeSignature={isFirstMeasure}
                     width={200}
-                    hasBegBarline={hasBegBarline}
+                    hasBegBarline={isFirstMeasure && hasBegBarline}
                     hasEndBarline={!(isLastMeasure && !hasEndBarline)}
                     clefType={clef}
                     key={i}
