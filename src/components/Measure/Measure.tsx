@@ -2,7 +2,7 @@ import React, {PureComponent, ReactChild} from 'react';
 import MeasureModel from './MeasureModel';
 import renderer from './renderer';
 
-import type {Note} from '../../constants';
+import type {Note, Stave, Voice} from '../../constants';
 
 export type Props = {
     clefType?: string;
@@ -16,8 +16,8 @@ export type Props = {
 }
 
 type State = {
-    stave?: Vex.Flow.Stave,
-    voice?: Vex.Flow.Voice,
+    stave?: Stave,
+    voice?: Voice,
     minWidth?: number,
 };
 

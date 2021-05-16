@@ -1,16 +1,12 @@
 import Vex from 'vexflow';
 import {CLEFS} from '../../constants';
 
-import type {Note} from '../../constants';
+import type {Note, Formatter, Stave, Voice} from '../../constants';
 
 const VF = Vex.Flow;
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = VF.Barline.type.NONE;
-
-type Formatter = Vex.Flow.Formatter;
-type Stave = Vex.Flow.Stave;
-type Voice = Vex.Flow.Voice;
 
 type Config = {
     width: number,
