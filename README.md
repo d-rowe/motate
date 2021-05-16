@@ -1,7 +1,9 @@
 # Motate
-Music notation rendering engine in React. It's built off of [VexFlow](https://github.com/0xfe/vexflow).
+Music notation rendering engine optimized for interactive applications. Motate achieves high re-render performance by rendering measures independently. This enables high re-render performance, as individual measures re-render only if needed. 
 
-# Screenshot
+Motate is built off of [VexFlow](https://github.com/0xfe/vexflow).
+
+
 ![](https://i.imgur.com/3S3nP9U.png)
 
 # Setup
