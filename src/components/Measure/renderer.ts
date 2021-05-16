@@ -1,6 +1,6 @@
 import Vex from 'vexflow';
 
-import type {Stave, Voice} from '../../../constants';
+import type {Stave, Voice} from '../../constants';
 
 const Renderer = Vex.Flow.Renderer;
 const DEFAULT_RENDERER_BACKEND = Renderer.Backends.SVG;

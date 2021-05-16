@@ -45,6 +45,8 @@ class Measure extends PureComponent<Props, State> {
     }
 
     shouldComponentUpdate(nextProps: Props, nextState: State) {
+        // TODO: RCA re-render issue, this is not a long term solution
+        // Something upstream is most likely creating new references
         if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
             return true;
         }
