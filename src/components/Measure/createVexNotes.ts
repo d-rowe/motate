@@ -11,7 +11,6 @@ type ParsedPitch = {
     octave: string | null,
 };
 
-
 export default function createVexNotes(chords: Chord[], clef: string) {
     return chords.map(chord => {
         const {duration, pitches} = chord;
@@ -24,11 +23,11 @@ function createSingleVexNote(pitches: string[], clef: string, duration: number) 
 
     const keys = pitches.map((pitch, i) => {
         const parsedPitch = parsePitch(pitch);
-        const {accidental} = parsedPitch;
+        const {accidental, letter, octave} = parsedPitch;
         if (accidental) {
             accidentalsByPitchIndex.set(i, accidental);
         }
-        return getVexKey(parsedPitch);
+        return `${letter}/${octave}`;
     });
 
     const staveNote = new VF.StaveNote({
@@ -42,13 +41,6 @@ function createSingleVexNote(pitches: string[], clef: string, duration: number) 
     });
 
     return staveNote;
-}
-
-
-function getVexKey(parsedPitch: ParsedPitch): string {
-    const {letter, octave} = parsedPitch;
-
-    return `${letter}/${octave}`;
 }
 
 function parsePitch(pitch: string): ParsedPitch {
@@ -68,6 +60,6 @@ function parsePitch(pitch: string): ParsedPitch {
     return {
         letter: letter.toLowerCase(),
         accidental,
-        octave
+        octave,
     };
 }

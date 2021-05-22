@@ -11,11 +11,11 @@ type Config = {
 };
 
 function renderer(container: HTMLDivElement, config: Config) {
-    const vexFragment = document.createDocumentFragment();
     const {
         stave,
         voice,
     } = config;
+    const vexFragment = document.createDocumentFragment();
     // @ts-ignore
     const vexRenderer = new Renderer(vexFragment, RENDERER_BACKEND);
     const context = vexRenderer.getContext();
