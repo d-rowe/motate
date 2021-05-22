@@ -3,7 +3,7 @@ import Vex from 'vexflow';
 import type {Stave, Voice} from '../../constants';
 
 const Renderer = Vex.Flow.Renderer;
-const DEFAULT_RENDERER_BACKEND = Renderer.Backends.SVG;
+const RENDERER_BACKEND = Renderer.Backends.SVG;
 
 type Config = {
     stave: Stave,
@@ -17,7 +17,7 @@ function renderer(container: HTMLDivElement, config: Config) {
         voice,
     } = config;
     // @ts-ignore
-    const vexRenderer = new Renderer(vexFragment, DEFAULT_RENDERER_BACKEND);
+    const vexRenderer = new Renderer(vexFragment, RENDERER_BACKEND);
     const context = vexRenderer.getContext();
 
     stave.setContext(context).draw();

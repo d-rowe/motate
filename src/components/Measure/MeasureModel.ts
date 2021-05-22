@@ -1,13 +1,15 @@
 import Vex from 'vexflow';
 import {CLEFS} from '../../constants';
+import createVexNotes from './createVexNotes';
 
-import type {Note, Formatter, Stave, Voice} from '../../constants';
+import type {Chord, Formatter, Stave, Voice} from '../../constants';
 
 const VF = Vex.Flow;
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = VF.Barline.type.NONE;
 const WIDTH_FACTOR = 2.5;
+const DEFAULT_INITIAL_WIDTH = 200;
 
 type Config = {
     width?: number,
@@ -17,7 +19,7 @@ type Config = {
     showTimeSignature?: boolean,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    notes?: Note[],
+    chords?: Chord[],
 };
 
 class MeasureModel {
@@ -36,7 +38,7 @@ class MeasureModel {
             timeSignature,
             showClef,
             showTimeSignature,
-            notes = [],
+            chords = [],
             width,
         } = config;
 
@@ -44,28 +46,19 @@ class MeasureModel {
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
     
         this.formatter = new VF.Formatter();
-        this.stave = new VF.Stave(0, 2.5, width - 1);
+        const initWidth = width || DEFAULT_INITIAL_WIDTH;
+        this.stave = new VF.Stave(0, 2.5, initWidth - 1);
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
 
         this.setBarlines();
         showClef && this.setClef();
         showTimeSignature && this.setTimeSignature();
     
-        const vexNotes = this.createVexNotes(notes);
+        const vexNotes = createVexNotes(chords, this.clefType);
         this.voice.addTickables(vexNotes);
         this.width = this.stave.getWidth();
     
-        notes.length && this.format();
-    }
-
-    private createVexNotes(notes: Note[]) {
-        return notes.map(({keys, duration}) => (
-            new VF.StaveNote({
-                clef: this.clefType,
-                keys,
-                duration,
-            })
-        ));
+        chords.length && this.format();
     }
 
     private format() {
