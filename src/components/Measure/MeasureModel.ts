@@ -21,13 +21,13 @@ type Config = {
 };
 
 class MeasureModel {
+    stave: Stave;
+    voice: Voice;
+    width: number;
     private config: Config;
     private formatter: Formatter;
-    private stave: Stave;
-    private voice: Voice;
     private clefType: string;
     private timeSignature: string;
-    private width: number;
 
     constructor(config: Config) {
         this.config = config;
@@ -53,21 +53,9 @@ class MeasureModel {
     
         const vexNotes = this.createVexNotes(notes);
         this.voice.addTickables(vexNotes);
-        this.width = width ?? this.stave.getWidth();
+        this.width = this.stave.getWidth();
     
         notes.length && this.format();
-    }
-
-    getStave(): Stave {
-        return this.stave;
-    }
-
-    getVoice(): Voice {
-        return this.voice;
-    }
-
-    getWidth(): number {
-        return this.width;
     }
 
     private createVexNotes(notes: Note[]) {

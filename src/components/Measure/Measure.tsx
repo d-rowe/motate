@@ -55,12 +55,8 @@ class Measure extends PureComponent<Props, State> {
     }
 
     static getDerivedStateFromProps(props: Props): State {
-        const measureModel = new MeasureModel(props);
-        return {
-            voice: measureModel.getVoice(),
-            stave: measureModel.getStave(),
-            width: measureModel.getWidth(),
-        };  
+        const {voice, stave, width} = new MeasureModel(props);
+        return {voice, stave, width};  
     }
 
     renderNotation() {
