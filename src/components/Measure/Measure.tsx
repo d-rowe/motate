@@ -2,7 +2,7 @@ import React, {PureComponent, ReactChild} from 'react';
 import MeasureModel from './MeasureModel';
 import renderer from './renderer';
 
-import type {Note, Stave, Voice} from '../../constants';
+import type {Chord, Stave, Voice} from '../../constants';
 
 export type Props = {
     clefType?: string;
@@ -12,7 +12,7 @@ export type Props = {
     width?: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    notes?: Note[],
+    chords?: Chord[]
 }
 
 type State = {

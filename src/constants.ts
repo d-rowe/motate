@@ -18,7 +18,7 @@ export type Formatter = Vex.Flow.Formatter;
 export type Stave = Vex.Flow.Stave;
 export type Voice = Vex.Flow.Voice;
 
-export type Note = {
-    keys: string[],
-    duration: string,
+export type Chord = {
+    duration: number,
+    pitches: string[],
 };
