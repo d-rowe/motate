@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
-import type {StaveOptions} from './constants';
+import type {Stave} from '../../constants';
 
 type Props = {
-    staves: StaveOptions[]
+    staves: Stave[]
 };
 
 class Left extends PureComponent<Props> {
