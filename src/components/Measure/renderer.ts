@@ -1,13 +1,13 @@
 import Vex from 'vexflow';
 
-import type {Stave, Voice} from '../../constants';
+import type {VexStave, VexVoice} from '../../constants';
 
 const Renderer = Vex.Flow.Renderer;
 const RENDERER_BACKEND = Renderer.Backends.SVG;
 
 type Config = {
-    stave: Stave,
-    voice: Voice,
+    stave: VexStave,
+    voice: VexVoice,
 };
 
 function renderer(container: HTMLDivElement, config: Config) {

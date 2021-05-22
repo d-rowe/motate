@@ -1,15 +1,13 @@
 import React, {PureComponent} from 'react';
 import Measure from '../Measure';
-
-import type {Note} from '../../constants';
+import {Measure as MeasureType} from '../../constants';
 
 export type Props = {
     name?: string,
     clef?: string,
-    measures: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    measureNotes?: Array<Note[]>,
+    measures?: MeasureType[],
 };
 
 class Stave extends PureComponent<Props> {
@@ -22,36 +20,26 @@ class Stave extends PureComponent<Props> {
         const {
             name,
             clef,
-            measures,
+            measures = [],
             hasBegBarline,
             hasEndBarline,
-            measureNotes = [],
         } = this.props;
-        // TODO: measures should be array of Objects
-        // this is just for initial PoC
-        const m = [];
-        for (let i = 0; i < measures; i++) {
-            const isFirstMeasure = i === 0;
-            const isLastMeasure = i === measures - 1;
-            m.push(
-                <Measure
-                    showClef={isFirstMeasure}
-                    showTimeSignature={isFirstMeasure}
-                    width={200}
-                    hasBegBarline={isFirstMeasure && hasBegBarline}
-                    hasEndBarline={!(isLastMeasure && !hasEndBarline)}
-                    clefType={clef}
-                    key={i}
-                    notes={measureNotes[i]}
-                />
-            )
-        }
         return (
             <div
                 aria-label={`${name} stave`}
                 style={{display: 'flex'}}
             >
-                {m}
+                {measures.map((measure, i) => (
+                    <Measure
+                        {...measure}
+                        key={i}
+                        showClef={measure.showClef || i === 0}
+                        showTimeSignature={measure.showTimeSignature || i === 0}
+                        hasBegBarline={measure.hasBegBarline || (i === 0 && hasBegBarline)}
+                        hasEndBarline={measure.hasEndBarline || !(i === measures.length -1 && !hasEndBarline)}
+                        clef={measure.clef || clef}
+                    />
+                ))}
             </div>
         );
     }

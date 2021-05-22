@@ -1,6 +1,5 @@
 import React from 'react';
 import System, {Props} from '../components/System';
-import {CLEFS} from '../constants';
 import {Story, Meta} from '@storybook/react';
 
 
@@ -14,99 +13,73 @@ const Template: Story<Props> = (args) => <System {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    measures: 4,
     staves: [
         {
             name: 'Trumpet',
-            clef: CLEFS.TREBLE,
-            measureNotes: [
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],               
-            ]
+            clef: 'treble',
+            measures: [
+                {
+                  chords: [
+                    {pitches: ['c4', 'e4', 'g4'], duration: 4},
+                    {pitches: ['c4', 'f4', 'a4'], duration: 4},
+                    {pitches: ['b3', 'd4', 'f4', 'g4'], duration: 4},
+                    {pitches: ['c4', 'e4', 'g4'], duration: 4},
+                  ]
+                },
+                {
+                  chords: [
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4', 'e4', 'g4', 'b4'], duration: 4},
+                  ]
+                }
+            ],
         },
         {
             name: 'Flute',
-            clef: CLEFS.TREBLE,
-            measureNotes: [
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/4"], duration: "q"},
-                    {keys: ["f/3"], duration: "q"},
-                    {keys: ["b/4"], duration: "qr"},
-                    {keys: ["c/4", "e/4", "g/4"], duration: "q"},
-                ],           
-            ]
+            clef: 'treble',
+            measures: [
+                {
+                  chords: [
+                    {pitches: ['c4', 'e4', 'g4'], duration: 4},
+                    {pitches: ['c4', 'f4', 'a4'], duration: 4},
+                    {pitches: ['b3', 'd4', 'f4', 'g4'], duration: 4},
+                    {pitches: ['c4', 'e4', 'g4'], duration: 4},
+                  ]
+                },
+                {
+                  chords: [
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4'], duration: 4},
+                    {pitches: ['c4', 'e4', 'g4', 'b4'], duration: 4},
+                  ]
+                }
+            ],
         },
         {
             name: 'Trombone',
-            clef: CLEFS.BASS,
-            measureNotes: [
-                [
-                    {keys: ["c/3"], duration: "q"},
-                    {keys: ["f/2"], duration: "q"},
-                    {keys: ["d/3"], duration: "qr"},
-                    {keys: ["c/3", "e/3", "g/3"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/3"], duration: "q"},
-                    {keys: ["f/2"], duration: "q"},
-                    {keys: ["d/3"], duration: "qr"},
-                    {keys: ["c/3", "e/3", "g/3"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/3"], duration: "q"},
-                    {keys: ["f/2"], duration: "q"},
-                    {keys: ["d/3"], duration: "qr"},
-                    {keys: ["c/3", "e/3", "g/3"], duration: "q"},
-                ],
-                [
-                    {keys: ["c/3"], duration: "q"},
-                    {keys: ["f/2"], duration: "q"},
-                    {keys: ["d/3"], duration: "qr"},
-                    {keys: ["c/3", "e/3", "g/3"], duration: "q"},
-                ],            
-            ]
+            clef: 'bass',
+            measures: [
+                {
+                  chords: [
+                    {pitches: ['c3', 'e3', 'g3'], duration: 4},
+                    {pitches: ['c3', 'f3', 'a3'], duration: 4},
+                    {pitches: ['b2', 'd3', 'f3', 'g3'], duration: 4},
+                    {pitches: ['c3', 'e3', 'g3'], duration: 4},
+                  ]
+                },
+                {
+                  chords: [
+                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3', 'e3', 'g3', 'b3'], duration: 4},
+                  ]
+                }
+            ],
         },
     ],
-    selectedMeasure: 0
 };
 

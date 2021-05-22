@@ -3,25 +3,22 @@ import Left from './Left';
 import Right from './Right';
 import Stave from '../Stave';
 
-import type {StaveOptions} from './constants';
+import type {Stave as StaveType} from '../../constants';
 
 export type Props = {
-    measures: number,
-    staves: StaveOptions[],
-    selectedMeasure: number,
+    staves: StaveType[],
 };
 
 class System extends PureComponent<Props> {
     render() {
         const {
             staves,
-            measures,
         } = this.props;
         return (
             <div style={{display: 'flex'}}>
                 <Left staves={staves} />
                 <div>
-                    {staves.map(({name, clef, measureNotes}, i) => (
+                    {staves.map(({name, clef, measures}, i) => (
                         <Stave
                             name={name}
                             measures={measures}
@@ -29,7 +26,6 @@ class System extends PureComponent<Props> {
                             hasBegBarline={false}
                             hasEndBarline={false}
                             key={i}
-                            measureNotes={measureNotes}
                         />
                     ))}
                 </div>

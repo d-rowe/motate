@@ -2,7 +2,7 @@ import Vex from 'vexflow';
 import {CLEFS} from '../../constants';
 import createVexNotes from './createVexNotes';
 
-import type {Chord, Formatter, Stave, Voice} from '../../constants';
+import type {Chord, VexFormatter, VexStave, VexVoice} from '../../constants';
 
 const VF = Vex.Flow;
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
@@ -13,7 +13,7 @@ const DEFAULT_INITIAL_WIDTH = 200;
 
 type Config = {
     width?: number,
-    clefType?: string,
+    clef?: string,
     showClef?: boolean,
     timeSignature?: string,
     showTimeSignature?: boolean,
@@ -23,18 +23,18 @@ type Config = {
 };
 
 class MeasureModel {
-    stave: Stave;
-    voice: Voice;
+    stave: VexStave;
+    voice: VexVoice;
     width: number;
     private config: Config;
-    private formatter: Formatter;
-    private clefType: string;
+    private formatter: VexFormatter;
+    private clef: string;
     private timeSignature: string;
 
     constructor(config: Config) {
         this.config = config;
         const {
-            clefType,
+            clef,
             timeSignature,
             showClef,
             showTimeSignature,
@@ -42,7 +42,7 @@ class MeasureModel {
             width,
         } = config;
 
-        this.clefType = clefType || DEFAULT_CLEF_TYPE;
+        this.clef = clef || DEFAULT_CLEF_TYPE;
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
     
         this.formatter = new VF.Formatter();
@@ -54,7 +54,7 @@ class MeasureModel {
         showClef && this.setClef();
         showTimeSignature && this.setTimeSignature();
     
-        const vexNotes = createVexNotes(chords, this.clefType);
+        const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
         this.width = this.stave.getWidth();
     
@@ -90,11 +90,11 @@ class MeasureModel {
     }
 
     private setClef() {
-        const {clefType, stave} = this;
+        const {clef, stave} = this;
         try {
-            stave.addClef(clefType);
+            stave.addClef(clef);
         } catch {
-            console.warn('Unsupported clef type:', clefType);
+            console.warn('Unsupported clef type:', clef);
         }
     }
 

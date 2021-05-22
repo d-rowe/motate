@@ -2,22 +2,17 @@ import React, {PureComponent, ReactChild} from 'react';
 import MeasureModel from './MeasureModel';
 import renderer from './renderer';
 
-import type {Chord, Stave, Voice} from '../../constants';
+import type {
+    Measure as MeasureType,
+    VexStave,
+    VexVoice
+} from '../../constants';
 
-export type Props = {
-    clefType?: string;
-    showClef?: boolean;
-    timeSignature?: string;
-    showTimeSignature?: boolean;
-    width?: number,
-    hasBegBarline?: boolean,
-    hasEndBarline?: boolean,
-    chords?: Chord[]
-}
+export type Props = MeasureType;
 
 type State = {
-    stave?: Stave,
-    voice?: Voice,
+    stave?: VexStave,
+    voice?: VexVoice,
     width: number,
 };
 

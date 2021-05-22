@@ -14,11 +14,28 @@ export const CLEFS = {
     PERCUSSION,
 };
 
-export type Formatter = Vex.Flow.Formatter;
-export type Stave = Vex.Flow.Stave;
-export type Voice = Vex.Flow.Voice;
+export type VexFormatter = Vex.Flow.Formatter;
+export type VexStave = Vex.Flow.Stave;
+export type VexVoice = Vex.Flow.Voice;
 
 export type Chord = {
     duration: number,
     pitches: string[],
+};
+
+export type Measure = {
+    clef?: string;
+    showClef?: boolean;
+    timeSignature?: string;
+    showTimeSignature?: boolean;
+    width?: number,
+    hasBegBarline?: boolean,
+    hasEndBarline?: boolean,
+    chords?: Chord[]
+};
+
+export type Stave = {
+    name?: string,
+    clef?: string,
+    measures?: Measure[],
 };
