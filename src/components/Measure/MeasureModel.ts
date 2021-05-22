@@ -7,9 +7,10 @@ const VF = Vex.Flow;
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = VF.Barline.type.NONE;
+const WIDTH_FACTOR = 2.5;
 
 type Config = {
-    width: number,
+    width?: number,
     clefType?: string,
     showClef?: boolean,
     timeSignature?: string,
@@ -26,7 +27,7 @@ class MeasureModel {
     private voice: Voice;
     private clefType: string;
     private timeSignature: string;
-    private minWidth: number;
+    private width: number;
 
     constructor(config: Config) {
         this.config = config;
@@ -52,7 +53,7 @@ class MeasureModel {
     
         const vexNotes = this.createVexNotes(notes);
         this.voice.addTickables(vexNotes);
-        this.minWidth = this.stave.getWidth();
+        this.width = width ?? this.stave.getWidth();
     
         notes.length && this.format();
     }
@@ -65,8 +66,8 @@ class MeasureModel {
         return this.voice;
     }
 
-    getMinWidth(): number {
-        return this.minWidth;
+    getWidth(): number {
+        return this.width;
     }
 
     private createVexNotes(notes: Note[]) {
@@ -82,11 +83,18 @@ class MeasureModel {
     private format() {
         const voices = [this.voice];
         this.formatter.joinVoices(voices);
-        this.formatter.preCalculateMinTotalWidth(voices);
+        const startX = this.stave.getNoteStartX();
 
-        const voiceWidth = this.formatter.getMinTotalWidth() * 2.5;
-        this.minWidth = this.stave.getNoteStartX() + voiceWidth;
-        this.stave.setWidth(this.minWidth);
+        if (this.config.width) {
+            this.formatter.format(voices, this.width - startX);
+            return;
+        }
+
+        // No width provided - calculate appropriate width
+        this.formatter.preCalculateMinTotalWidth(voices);
+        const voiceWidth = this.formatter.getMinTotalWidth() * WIDTH_FACTOR;
+        this.width = startX + voiceWidth;
+        this.stave.setWidth(this.width);
         this.formatter.format(voices, voiceWidth);
     }
 

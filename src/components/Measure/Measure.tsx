@@ -9,7 +9,7 @@ export type Props = {
     showClef?: boolean;
     timeSignature?: string;
     showTimeSignature?: boolean;
-    width: number,
+    width?: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
     notes?: Note[],
@@ -18,13 +18,12 @@ export type Props = {
 type State = {
     stave?: Stave,
     voice?: Voice,
-    minWidth?: number,
+    width: number,
 };
 
 class Measure extends PureComponent<Props, State> {
     private ref = React.createRef<HTMLDivElement>();
     private container?: HTMLDivElement | null;
-    state: State = {};
     static defaultProps = {
         hasBegBarline: true,
         hasEndBarline: true,
@@ -44,37 +43,23 @@ class Measure extends PureComponent<Props, State> {
         this.renderNotation();
     }
 
-    shouldComponentUpdate(nextProps: Props, nextState: State) {
-        // TODO: RCA re-render issue, this is not a long term solution
-        // Something upstream is most likely creating new references
-        if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
-            return true;
-        }
-
-        if (nextState.minWidth !== this.state.minWidth) {
-            return true;
-        }
-        
-        return false;
-    }
-
     render(): ReactChild {
-        const {minWidth} = this.state;
+        const {width} = this.state;
         return <div
             ref={this.ref}
             style={{
-                width: `${minWidth}px`,
+                width: `${width}px`,
                 height: '125px',
             }}
         />;
     }
 
-    static getDerivedStateFromProps(props: Props) {
+    static getDerivedStateFromProps(props: Props): State {
         const measureModel = new MeasureModel(props);
         return {
             voice: measureModel.getVoice(),
             stave: measureModel.getStave(),
-            minWidth: measureModel.getMinWidth(),
+            width: measureModel.getWidth(),
         };  
     }
 
@@ -82,10 +67,12 @@ class Measure extends PureComponent<Props, State> {
         if (!this.container) {
             throw new Error('Cannot render notation before container is initialized');
         }
+
         const {stave, voice} = this.state;
         if (!stave || !voice) {
             return;
         }
+
         renderer(this.container, {stave, voice});
     }
 }
