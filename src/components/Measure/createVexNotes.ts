@@ -20,13 +20,13 @@ export default function createVexNotes(chords: Chord[], clef: string) {
 }
 
 function createSingleVexNote(pitches: string[], clef: string, duration: number) {
-    const accidentals: Map<number, string> = new Map();
+    const accidentalsByPitchIndex: Map<number, string> = new Map();
 
     const keys = pitches.map((pitch, i) => {
         const parsedPitch = parsePitch(pitch);
         const {accidental} = parsedPitch;
         if (accidental) {
-            accidentals.set(i, accidental);
+            accidentalsByPitchIndex.set(i, accidental);
         }
         return getVexKey(parsedPitch);
     });
@@ -37,7 +37,9 @@ function createSingleVexNote(pitches: string[], clef: string, duration: number) 
         duration: duration.toString(),
     });
 
-    // TODO: Add accidentals to staveNote
+    accidentalsByPitchIndex.forEach((accidental, pitchIndex) => {
+        staveNote.addAccidental(pitchIndex, new VF.Accidental(accidental));
+    });
 
     return staveNote;
 }
