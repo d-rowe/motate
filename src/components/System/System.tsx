@@ -26,6 +26,7 @@ class System extends PureComponent<Props> {
                             hasBegBarline={false}
                             hasEndBarline={false}
                             key={i}
+                            staveIndex={i}
                         />
                     ))}
                 </div>

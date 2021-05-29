@@ -46,7 +46,7 @@ class MeasureModel {
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
     
         const initWidth = width || DEFAULT_INITIAL_WIDTH;
-        this.stave = new VF.Stave(0, 2.5, initWidth - 1);
+        this.stave = new VF.Stave(0, 2.5, initWidth);
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
 
         this.setBarlines();

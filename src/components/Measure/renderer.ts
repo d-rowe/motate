@@ -21,6 +21,11 @@ function renderer(container: HTMLDivElement, config: Config) {
     // @ts-ignore
     const vexRenderer = new Renderer(vexFragment, RENDERER_BACKEND);
     const context = vexRenderer.getContext();
+    // @ts-ignore
+    context.svg.setAttribute(
+        'style',
+        'position: absolute; inset: 0 0; width: 100%; height: 100%;',
+    );
 
     stave.setContext(context).draw();
     voice.draw(context, stave);

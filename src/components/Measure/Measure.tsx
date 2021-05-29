@@ -47,6 +47,7 @@ class Measure extends PureComponent<Props, State> {
             style={{
                 width: `${width}px`,
                 height: '125px',
+                position: 'relative',
             }}
         />;
     }

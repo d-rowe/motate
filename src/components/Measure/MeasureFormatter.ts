@@ -28,8 +28,9 @@ class MeasureFormatter extends BaseFormatter {
         // No width provided - calculate appropriate width
         this.vexFormatter.preCalculateMinTotalWidth(voices);
         const voiceWidth = this.vexFormatter.getMinTotalWidth() * this.WIDTH_FACTOR;
-        this.width = startX + voiceWidth;
-        this.measure.stave.setWidth(this.width);
+        const newWidth = startX + voiceWidth;
+        this.measure.stave.setWidth(newWidth);
+        this.width = newWidth + 1;
         this.vexFormatter.format(voices, voiceWidth);
     }
 }
