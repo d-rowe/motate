@@ -2,7 +2,12 @@ import {CLEFS, VF} from '../../constants';
 import createVexNotes from './createVexNotes';
 import Formatter from './MeasureFormatter';
 
-import type {Measure, VexStave, VexVoice} from '../../constants';
+import type {
+    Measure,
+    VexBeam,
+    VexStave,
+    VexVoice
+} from '../../constants';
 
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
@@ -10,6 +15,7 @@ const NO_BARLINE = VF.Barline.type.NONE;
 const DEFAULT_INITIAL_WIDTH = 200;
 
 class MeasureModel {
+    beams: VexBeam[];
     stave: VexStave;
     voice: VexVoice;
     width: number;
@@ -49,6 +55,8 @@ class MeasureModel {
     
         const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
+        this.beams = VF.Beam.generateBeams(vexNotes);
+
         const staveWidth = this.stave.getWidth();
         this.formatter = formatter || new Formatter({width: width && staveWidth});
     

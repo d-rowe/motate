@@ -18,6 +18,7 @@ export const CLEFS = {
     PERCUSSION,
 };
 
+export type VexBeam = Vex.Flow.Beam;
 export type VexFormatter = Vex.Flow.Formatter;
 export type VexStave = Vex.Flow.Stave;
 export type VexVoice = Vex.Flow.Voice;

@@ -9,7 +9,7 @@ export default class BaseFormatter {
     options?: Options;
     vexFormatter: VexFormatter;
     width?: number;
-    WIDTH_FACTOR = 2.5;
+    WIDTH_FACTOR = 2;
 
     constructor(options?: Options) {
         this.options = options;

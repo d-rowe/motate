@@ -4,6 +4,7 @@ import renderer from './renderer';
 
 import type {
     Measure as MeasureType,
+    VexBeam,
     VexStave,
     VexVoice
 } from '../../constants';
@@ -11,6 +12,7 @@ import type {
 export type Props = MeasureType;
 
 type State = {
+    beams: VexBeam[],
     stave?: VexStave,
     voice?: VexVoice,
     width: number,
@@ -50,8 +52,18 @@ class Measure extends PureComponent<Props, State> {
     }
 
     static getDerivedStateFromProps(props: Props): State {
-        const {voice, stave, width} = new MeasureModel(props);
-        return {voice, stave, width};  
+        const {
+            beams,
+            voice,
+            stave,
+            width
+        } = new MeasureModel(props);
+        return {
+            beams,
+            voice,
+            stave,
+            width
+        };  
     }
 
     renderNotation() {
@@ -59,12 +71,12 @@ class Measure extends PureComponent<Props, State> {
             throw new Error('Cannot render notation before container is initialized');
         }
 
-        const {stave, voice} = this.state;
+        const {beams, stave, voice} = this.state;
         if (!stave || !voice) {
             return;
         }
 
-        renderer(this.container, {stave, voice});
+        renderer(this.container, {beams, stave, voice});
     }
 }
 

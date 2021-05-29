@@ -1,17 +1,19 @@
 import Vex from 'vexflow';
 
-import type {VexStave, VexVoice} from '../../constants';
+import type {VexBeam, VexStave, VexVoice} from '../../constants';
 
 const Renderer = Vex.Flow.Renderer;
 const RENDERER_BACKEND = Renderer.Backends.SVG;
 
 type Config = {
+    beams: VexBeam[],
     stave: VexStave,
     voice: VexVoice,
 };
 
 function renderer(container: HTMLDivElement, config: Config) {
     const {
+        beams,
         stave,
         voice,
     } = config;
@@ -22,6 +24,7 @@ function renderer(container: HTMLDivElement, config: Config) {
 
     stave.setContext(context).draw();
     voice.draw(context, stave);
+    beams.forEach(beam => beam.setContext(context).draw());
 
     container.innerHTML = '';
     container.appendChild(vexFragment);
