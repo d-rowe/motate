@@ -22,6 +22,7 @@ class MeasureFormatter extends BaseFormatter {
         const {width} = this.options || {};
         if (width) {
             this.vexFormatter.format(voices, width - startX);
+            this.width = width;
             return;
         }
 

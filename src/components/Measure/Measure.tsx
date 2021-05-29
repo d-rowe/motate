@@ -12,10 +12,10 @@ import type {
 export type Props = MeasureType;
 
 type State = {
-    beams: VexBeam[],
+    beams?: VexBeam[],
     stave?: VexStave,
     voice?: VexVoice,
-    width: number,
+    width?: number,
 };
 
 class Measure extends PureComponent<Props, State> {
@@ -26,6 +26,11 @@ class Measure extends PureComponent<Props, State> {
         hasEndBarline: true,
         showClef: true,
     };
+
+    constructor(props: Props) {
+        super(props);
+        this.state = {};
+    }
 
     componentDidMount() {
         this.container = this.ref.current;
@@ -72,7 +77,7 @@ class Measure extends PureComponent<Props, State> {
             throw new Error('Cannot render notation before container is initialized');
         }
 
-        const {beams, stave, voice} = this.state;
+        const {beams = [], stave, voice} = this.state;
         if (!stave || !voice) {
             return;
         }
