@@ -63,7 +63,7 @@ class MeasureModel {
         if (chords.length) {
             this.formatter.setMeasure(this);
             this.formatter.format();
-            this.width = this.formatter.width || DEFAULT_INITIAL_WIDTH;
+            this.width = this.formatter.getMeasureWidth(this) || DEFAULT_INITIAL_WIDTH;
         } else {
             this.width = staveWidth;
         }

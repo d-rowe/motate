@@ -8,7 +8,6 @@ export type Options = {
 export default class BaseFormatter {
     options?: Options;
     vexFormatter: VexFormatter;
-    width?: number;
     WIDTH_FACTOR = 2;
 
     constructor(options?: Options) {
@@ -18,10 +17,7 @@ export default class BaseFormatter {
 
     setMeasure(measure: MeasureModel) {}
 
-    format() {}
+    getMeasureWidth(measure: MeasureModel): number { return 0; }
 
-    joinVoices(voices: VexVoice[]) {
-        this.vexFormatter = new VF.Formatter();
-        this.vexFormatter.joinVoices(voices);
-    }
+    format() {}
 }

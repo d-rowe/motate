@@ -3,11 +3,15 @@ import MeasureModel from './MeasureModel';
 
 class MeasureFormatter extends BaseFormatter {
     private measure?: MeasureModel;
-    width?: number;
+    private width?: number;
 
     setMeasure(measure: MeasureModel) {
         this.measure = measure;
-        this.joinVoices([measure.voice]);
+        this.vexFormatter.joinVoices([measure.voice]);
+    }
+
+    getMeasureWidth(measure: MeasureModel): number {
+        return this.width || 0;
     }
 
     format() {

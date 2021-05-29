@@ -16,7 +16,7 @@ class Left extends PureComponent<Props> {
                     flexDirection: 'column',
                     justifyItems: 'stretch',
                     justifyContent: 'space-between',
-                    padding: '0 12px',
+                    padding: '0 12px 0 0',
                     margin: '42px 0',
                     textAlign: 'right',
                     borderRight: '4px solid black',
