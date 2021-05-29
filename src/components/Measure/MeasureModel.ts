@@ -1,21 +1,22 @@
 import {CLEFS, VF} from '../../constants';
 import createVexNotes from './createVexNotes';
+import Formatter from './MeasureFormatter';
 
-import type {Measure, VexFormatter, VexStave, VexVoice} from '../../constants';
+import type {Measure, VexStave, VexVoice} from '../../constants';
 
-const noop = () => {};
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = VF.Barline.type.NONE;
-const WIDTH_FACTOR = 2.5;
 const DEFAULT_INITIAL_WIDTH = 200;
 
 class MeasureModel {
     stave: VexStave;
     voice: VexVoice;
     width: number;
+    measureIndex?: number;
+    staveIndex?: number;
+    formatter: Formatter;
     private config: Measure;
-    private formatter: VexFormatter;
     private clef: string;
     private timeSignature: string;
 
@@ -28,12 +29,16 @@ class MeasureModel {
             showTimeSignature,
             chords = [],
             width,
+            measureIndex,
+            staveIndex,
+            formatter,
         } = config;
 
+        this.measureIndex = measureIndex;
+        this.staveIndex = staveIndex;
         this.clef = clef || DEFAULT_CLEF_TYPE;
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
     
-        this.formatter = new VF.Formatter();
         const initWidth = width || DEFAULT_INITIAL_WIDTH;
         this.stave = new VF.Stave(0, 2.5, initWidth - 1);
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
@@ -44,27 +49,16 @@ class MeasureModel {
     
         const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
-        this.width = this.stave.getWidth();
+        const staveWidth = this.stave.getWidth();
+        this.formatter = formatter || new Formatter({width: width && staveWidth});
     
-        chords.length && this.format();
-    }
-
-    private format() {
-        const voices = [this.voice];
-        this.formatter.joinVoices(voices);
-        const startX = this.stave.getNoteStartX();
-
-        if (this.config.width) {
-            this.formatter.format(voices, this.width - startX);
-            return;
+        if (chords.length) {
+            this.formatter.setMeasure(this);
+            this.formatter.format();
+            this.width = this.formatter.width || DEFAULT_INITIAL_WIDTH;
+        } else {
+            this.width = staveWidth;
         }
-
-        // No width provided - calculate appropriate width
-        this.formatter.preCalculateMinTotalWidth(voices);
-        const voiceWidth = this.formatter.getMinTotalWidth() * WIDTH_FACTOR;
-        this.width = startX + voiceWidth;
-        this.stave.setWidth(this.width);
-        this.formatter.format(voices, voiceWidth);
     }
 
     private setBarlines() {
@@ -91,7 +85,7 @@ class MeasureModel {
         try {
             stave.addTimeSignature(timeSignature);
         } catch {
-            console.warn('Unsupported time signature:', timeSignature)
+            console.warn('Unsupported time signature:', timeSignature);
         }
     }
 }

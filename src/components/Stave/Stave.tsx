@@ -8,6 +8,7 @@ export type Props = {
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
     measures?: MeasureType[],
+    staveIndex?: number,
 };
 
 class Stave extends PureComponent<Props> {
@@ -23,6 +24,7 @@ class Stave extends PureComponent<Props> {
             measures = [],
             hasBegBarline,
             hasEndBarline,
+            staveIndex,
         } = this.props;
         return (
             <div
@@ -38,6 +40,8 @@ class Stave extends PureComponent<Props> {
                         hasBegBarline={measure.hasBegBarline || (i === 0 && hasBegBarline)}
                         hasEndBarline={measure.hasEndBarline || !(i === measures.length -1 && !hasEndBarline)}
                         clef={measure.clef || clef}
+                        measureIndex={i}
+                        staveIndex={staveIndex}
                     />
                 ))}
             </div>

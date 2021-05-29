@@ -1,5 +1,7 @@
 import Vex from 'vexflow';
 
+import type BaseFormatter from './BaseFormatter';
+
 export const VF = Vex.Flow;
 
 const TREBLE = 'treble';
@@ -34,6 +36,9 @@ export type Measure = {
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
     chords?: Chord[],
+    measureIndex?: number,
+    staveIndex?: number,
+    formatter?: BaseFormatter,
 };
 
 export type Stave = {
