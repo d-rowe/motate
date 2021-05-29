@@ -1,37 +1,25 @@
-import Vex from 'vexflow';
-import {CLEFS} from '../../constants';
+import {CLEFS, VF} from '../../constants';
 import createVexNotes from './createVexNotes';
 
-import type {Chord, VexFormatter, VexStave, VexVoice} from '../../constants';
+import type {Measure, VexFormatter, VexStave, VexVoice} from '../../constants';
 
-const VF = Vex.Flow;
+const noop = () => {};
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
 const NO_BARLINE = VF.Barline.type.NONE;
 const WIDTH_FACTOR = 2.5;
 const DEFAULT_INITIAL_WIDTH = 200;
 
-type Config = {
-    width?: number,
-    clef?: string,
-    showClef?: boolean,
-    timeSignature?: string,
-    showTimeSignature?: boolean,
-    hasBegBarline?: boolean,
-    hasEndBarline?: boolean,
-    chords?: Chord[],
-};
-
 class MeasureModel {
     stave: VexStave;
     voice: VexVoice;
     width: number;
-    private config: Config;
+    private config: Measure;
     private formatter: VexFormatter;
     private clef: string;
     private timeSignature: string;
 
-    constructor(config: Config) {
+    constructor(config: Measure) {
         this.config = config;
         const {
             clef,

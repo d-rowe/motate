@@ -1,5 +1,7 @@
 import Vex from 'vexflow';
 
+export const VF = Vex.Flow;
+
 const TREBLE = 'treble';
 const ALTO = 'alto';
 const TENOR = 'tenor';
@@ -24,14 +26,14 @@ export type Chord = {
 };
 
 export type Measure = {
-    clef?: string;
-    showClef?: boolean;
-    timeSignature?: string;
-    showTimeSignature?: boolean;
+    clef?: string,
+    showClef?: boolean,
+    timeSignature?: string,
+    showTimeSignature?: boolean,
     width?: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    chords?: Chord[]
+    chords?: Chord[],
 };
 
 export type Stave = {

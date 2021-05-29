@@ -12,10 +12,7 @@ type ParsedPitch = {
 };
 
 export default function createVexNotes(chords: Chord[], clef: string) {
-    return chords.map(chord => {
-        const {duration, pitches} = chord;
-        return createSingleVexNote(pitches, clef, duration);
-    });
+    return chords.map(({duration, pitches}) => createSingleVexNote(pitches, clef, duration));
 }
 
 function createSingleVexNote(pitches: string[], clef: string, duration: number) {

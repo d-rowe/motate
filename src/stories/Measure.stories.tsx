@@ -19,8 +19,8 @@ Default.args = {
   chords: [
     {pitches: ['c4', 'e4', 'g4', 'b4'], duration: 8},
     {pitches: ['c4', 'e4', 'g4', 'b4'], duration: 8},
-    {pitches: ['C4'], duration: 4},
-    {pitches: ['C4'], duration: 4},
-    {pitches: ['C4'], duration: 4},
+    {pitches: ['c4'], duration: 4},
+    {pitches: ['c4'], duration: 4},
+    {pitches: ['c4'], duration: 4},
   ],
 };
