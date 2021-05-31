@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactChild} from 'react';
-import MeasureModel from './MeasureModel';
+import MeasureModel from '../../models/MeasureModel';
 import renderer from './renderer';
 
 import type {

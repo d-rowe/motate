@@ -1,5 +1,5 @@
-import BaseFormatter from '../../BaseFormatter';
-import MeasureModel from './MeasureModel';
+import BaseFormatter from './BaseFormatter';
+import MeasureModel from '../models/MeasureModel';
 
 class MeasureFormatter extends BaseFormatter {
     private measure?: MeasureModel;

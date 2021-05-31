@@ -1,23 +1,21 @@
-import {VexFormatter, VexVoice, VF} from './constants';
-import MeasureModel from './components/Measure/MeasureModel';
+import {VexFormatter, VF} from '../constants';
+import MeasureModel from '../models/MeasureModel';
 
 export type Options = {
     width?: number,
 };
 
 export default class BaseFormatter {
-    options?: Options;
+    options: Options;
     vexFormatter: VexFormatter;
     WIDTH_FACTOR = 2;
 
     constructor(options?: Options) {
-        this.options = options;
+        this.options = options || {};
         this.vexFormatter = new VF.Formatter();
     }
 
     setMeasure(measure: MeasureModel) {}
-
-    getMeasureWidth(measure: MeasureModel): number { return 0; }
-
+    getMeasureWidth(measure: MeasureModel): number {return 0;}
     format() {}
 }

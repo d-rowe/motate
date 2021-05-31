@@ -1,13 +1,13 @@
-import {CLEFS, VF} from '../../constants';
-import createVexNotes from './createVexNotes';
-import Formatter from './MeasureFormatter';
+import {CLEFS, VF} from '../constants';
+import createVexNotes from '../components/Measure/createVexNotes';
+import Formatter from '../formatters/MeasureFormatter';
 
 import type {
     Measure,
     VexBeam,
     VexStave,
     VexVoice
-} from '../../constants';
+} from '../constants';
 
 const DEFAULT_CLEF_TYPE = CLEFS.TREBLE;
 const DEFAULT_TIME_SIGNATURE = 'C';
