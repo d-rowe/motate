@@ -36,7 +36,7 @@ class StaveFormatter extends BaseFormatter {
         });
 
         const widthFactor = this.getWidthFactor(measuresDimensions);
-        
+
         this.measures.forEach((measure, i) => {
             const {minVoiceWidth, noteStartX}  = measuresDimensions[i];
             const measureWidth = (minVoiceWidth * widthFactor) + noteStartX;

@@ -44,7 +44,7 @@ class MeasureModel {
         this.staveIndex = staveIndex;
         this.clef = clef || DEFAULT_CLEF_TYPE;
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
-    
+
         const initWidth = width || DEFAULT_INITIAL_WIDTH;
         this.stave = new VF.Stave(0, 2.5, initWidth);
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
@@ -52,14 +52,14 @@ class MeasureModel {
         this.setBarlines();
         showClef && this.setClef();
         showTimeSignature && this.setTimeSignature();
-    
+
         const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
         this.beams = VF.Beam.generateBeams(vexNotes);
 
         const staveWidth = this.stave.getWidth();
         this.formatter = formatter || new Formatter({width: width && staveWidth});
-    
+
         if (chords.length) {
             this.formatter.setMeasure(this);
             this.formatter.format();

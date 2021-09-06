@@ -2,14 +2,27 @@ import React, {PureComponent, ReactChild} from 'react';
 import MeasureModel from '../../models/MeasureModel';
 import renderer from './renderer';
 
+import type BaseFormatter from '../../formatters/BaseFormatter';
 import type {
-    Measure as MeasureType,
+    Chord,
     VexBeam,
     VexStave,
     VexVoice
 } from '../../constants';
 
-export type Props = MeasureType;
+export type Props = {
+    clef?: string,
+    showClef?: boolean,
+    timeSignature?: string,
+    showTimeSignature?: boolean,
+    width?: number,
+    hasBegBarline?: boolean,
+    hasEndBarline?: boolean,
+    chords?: Chord[],
+    measureIndex?: number,
+    staveIndex?: number,
+    formatter?: BaseFormatter,
+};
 
 type State = {
     beams?: VexBeam[],
@@ -69,7 +82,7 @@ class Measure extends PureComponent<Props, State> {
             voice,
             stave,
             width
-        };  
+        };
     }
 
     renderNotation() {

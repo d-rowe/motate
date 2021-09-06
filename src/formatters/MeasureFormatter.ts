@@ -10,7 +10,7 @@ class MeasureFormatter extends BaseFormatter {
         this.vexFormatter.joinVoices([measure.voice]);
     }
 
-    getMeasureWidth(measure: MeasureModel): number {
+    getMeasureWidth(): number {
         return this.width || 0;
     }
 

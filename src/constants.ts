@@ -3,6 +3,7 @@ import Vex from 'vexflow';
 import type BaseFormatter from './formatters/BaseFormatter';
 
 export const VF = Vex.Flow;
+
 const TREBLE = 'treble';
 const ALTO = 'alto';
 const TENOR = 'tenor';
