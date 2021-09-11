@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import ScoreModel from '../../models/ScoreModel';
 import Left from './Left';
 import Right from './Right';
 import Stave from '../Stave';
@@ -14,6 +15,12 @@ class System extends PureComponent<Props> {
     static defaultProps = {
         showInstrumentLabels: true,
     };
+
+    constructor(props: Props) {
+        super(props);
+        const model = new ScoreModel(this.props.staves);
+        console.log(model.measures);
+    }
 
     render() {
         const {
