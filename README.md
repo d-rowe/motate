@@ -1,5 +1,7 @@
 # Motate
-Music notation rendering engine optimized for interactive applications. Motate renders measures independently, enabling efficient re-renders.
+Music notation rendering engine for interactive applications. Motate optimizes for performant re-renders.
+
+Still in very early phase of development.
 
 Motate is built off of [VexFlow](https://github.com/0xfe/vexflow).
 
