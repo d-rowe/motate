@@ -19,7 +19,6 @@ class System extends PureComponent<Props> {
     constructor(props: Props) {
         super(props);
         const model = new ScoreModel(this.props.staves);
-        console.log(model.measures);
     }
 
     render() {

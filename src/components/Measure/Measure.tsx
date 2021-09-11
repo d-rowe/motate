@@ -70,20 +70,20 @@ class Measure extends PureComponent<Props, State> {
         />;
     }
 
-    static getDerivedStateFromProps(props: Props): State {
-        const {
-            beams,
-            voice,
-            stave,
-            width
-        } = new MeasureModel(props);
-        return {
-            beams,
-            voice,
-            stave,
-            width
-        };
-    }
+    // static getDerivedStateFromProps(props: Props): State {
+    //     const {
+    //         beams,
+    //         voice,
+    //         stave,
+    //         width
+    //     } = new MeasureModel(props);
+    //     return {
+    //         beams,
+    //         voice,
+    //         stave,
+    //         width
+    //     };
+    // }
 
     renderNotation() {
         if (!this.container) {

@@ -30,8 +30,8 @@ Default.args = {
                   chords: [
                     {pitches: ['a4'], duration: 4},
                     {pitches: ['a4'], duration: 4},
-                    {pitches: ['g4'], duration: 4},
-                    {pitches: ['g4'], duration: 4},
+                    {pitches: ['g4'], duration: 2},
+                    // {pitches: ['g4'], duration: 4},
                   ]
                 },
             ],
@@ -52,8 +52,8 @@ Default.args = {
                   chords: [
                     {pitches: ['g3'], duration: 4},
                     {pitches: ['d3'], duration: 4},
-                    {pitches: ['c3'], duration: 4},
-                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3'], duration: 2},
+                    // {pitches: ['c3'], duration: 4},
                   ]
                 },
             ],

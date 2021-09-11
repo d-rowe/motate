@@ -33,7 +33,6 @@ export type Measure = {
     showClef?: boolean,
     timeSignature?: string,
     showTimeSignature?: boolean,
-    width?: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
     chords?: Chord[],
