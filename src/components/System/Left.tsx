@@ -2,12 +2,16 @@ import React, {PureComponent} from 'react';
 import type {Stave} from '../../constants';
 
 type Props = {
-    staves: Stave[]
+    staves: Stave[],
+    showInstrumentLabels: boolean,
 };
 
 class Left extends PureComponent<Props> {
     render() {
-        const {staves} = this.props;
+        const {
+            staves,
+            showInstrumentLabels,
+        } = this.props;
         return (
             <div
                 aria-label='instrument overview'
@@ -22,7 +26,7 @@ class Left extends PureComponent<Props> {
                     borderRight: '4px solid black',
                 }}
             >
-                {staves.map(({name}, i) => (
+                {showInstrumentLabels && staves.map(({name}, i) => (
                     <p
                         style={{margin: '10px 0 12px'}}
                         key={i}

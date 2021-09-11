@@ -7,16 +7,25 @@ import type {Stave as StaveType} from '../../constants';
 
 export type Props = {
     staves: StaveType[],
+    showInstrumentLabels: boolean,
 };
 
 class System extends PureComponent<Props> {
+    static defaultProps = {
+        showInstrumentLabels: true,
+    };
+
     render() {
         const {
             staves,
+            showInstrumentLabels,
         } = this.props;
         return (
             <div style={{display: 'flex'}}>
-                <Left staves={staves} />
+                <Left
+                    staves={staves}
+                    showInstrumentLabels={showInstrumentLabels}
+                />
                 <div>
                     {staves.map(({name, clef, measures}, i) => (
                         <Stave
