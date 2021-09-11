@@ -16,15 +16,13 @@ const DEFAULT_INITIAL_WIDTH = 200;
 
 class MeasureModel {
     beams: VexBeam[];
-    stave: VexStave;
-    voice: VexVoice;
-    width: number;
-    measureIndex?: number;
-    staveIndex?: number;
-    formatter: Formatter;
     private config: Measure;
     private clef: string;
     private timeSignature: string;
+    stave: VexStave;
+    voice: VexVoice;
+    measureIndex?: number;
+    staveIndex?: number;
 
     constructor(config: Measure) {
         this.config = config;
@@ -34,10 +32,8 @@ class MeasureModel {
             showClef,
             showTimeSignature,
             chords = [],
-            width,
             measureIndex,
             staveIndex,
-            formatter,
         } = config;
 
         this.measureIndex = measureIndex;
@@ -45,8 +41,7 @@ class MeasureModel {
         this.clef = clef || DEFAULT_CLEF_TYPE;
         this.timeSignature = timeSignature || DEFAULT_TIME_SIGNATURE;
 
-        const initWidth = width || DEFAULT_INITIAL_WIDTH;
-        this.stave = new VF.Stave(0, 2.5, initWidth);
+        this.stave = new VF.Stave(0, 2.5, DEFAULT_INITIAL_WIDTH);
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
 
         this.setBarlines();
@@ -56,17 +51,6 @@ class MeasureModel {
         const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
         this.beams = VF.Beam.generateBeams(vexNotes);
-
-        const staveWidth = this.stave.getWidth();
-        this.formatter = formatter || new Formatter({width: width && staveWidth});
-
-        if (chords.length) {
-            this.formatter.setMeasure(this);
-            this.formatter.format();
-            this.width = this.formatter.getMeasureWidth(this) || DEFAULT_INITIAL_WIDTH;
-        } else {
-            this.width = staveWidth;
-        }
     }
 
     private setBarlines() {
