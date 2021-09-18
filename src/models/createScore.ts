@@ -16,7 +16,7 @@ type SystemMeasure = {
 
 type Score = SystemMeasure[];
 
-export function createScore(staves: StaveConfig[]): Score {
+export default function createScore(staves: StaveConfig[]): Score {
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();
     return systemMeasureConfig.map(systemMeasure => {
@@ -63,6 +63,8 @@ export function createScore(staves: StaveConfig[]): Score {
                 acc[measureIndex].push({
                     ...measure,
                     clef,
+                    hasBegBarline: !isFirstMeasure,
+                    hasEndBarline: false,
                     showClef: isFirstMeasure,
                     showTimeSignature: isFirstMeasure,
                 });

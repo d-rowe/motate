@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {createScore} from '../../models/ScoreModel';
+import createScore from '../../models/createScore';
 import Left from './Left';
 import Right from './Right';
 import SystemMeasure from '../SystemMeasure';
