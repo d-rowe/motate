@@ -50,10 +50,11 @@ Default.args = {
                 },
                 {
                   chords: [
-                    {pitches: ['g3'], duration: 4},
-                    {pitches: ['d3'], duration: 4},
-                    {pitches: ['c3'], duration: 2},
-                    // {pitches: ['c3'], duration: 4},
+                    {pitches: ['g3'], duration: 8},
+                    {pitches: ['d3'], duration: 8},
+                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3'], duration: 4},
+                    {pitches: ['c3'], duration: 4},
                   ]
                 },
             ],
