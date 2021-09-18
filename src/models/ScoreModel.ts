@@ -1,8 +1,6 @@
 import {
     MeasureConfig,
     StaveConfig,
-    SystemMeasure,
-    VexFormatter,
     VexVoice,
     VF
 } from '../constants';
@@ -11,57 +9,49 @@ import MeasureModel from './MeasureModel';
 // Width factor (min renderable width = 1)
 const MEASURE_WIDTH_FACTOR = 1.3;
 
-type Staves = StaveConfig[];
+type SystemMeasure = {
+    measures: MeasureModel[],
+    width: number,
+}
 
-class ScoreModel {
-    private staves: Staves;
-    private scoreModel: MeasureModel[][] = [];
-    private systemMeasures: SystemMeasure[] = [];
-    private systemMeasureWidths: number[] = [];
-    private formatter: VexFormatter;
+type Score = SystemMeasure[];
 
-    constructor(staves: Staves) {
-        this.formatter = new VF.Formatter();
-        this.staves = staves;
-        this.deriveSystemMeasures();
-        this.format();
-    }
-
-    format() {
-        this.systemMeasures.forEach((systemMeasure, systemMeasureIndex) => {
-            let maxNoteStartX = 0;
-            const voices: VexVoice[] = [];
-            systemMeasure.forEach(staveMeasure => {
-                // TODO: cache measure model by measure/stave indexes
-                //       this will help with component memoization/perf in future
-                const measureModel = new MeasureModel(staveMeasure);
-                const noteStartX = measureModel.stave.getNoteStartX();
-                if (noteStartX > maxNoteStartX) {
-                    maxNoteStartX = noteStartX;
-                }
-                voices.push(measureModel.voice);
-
-                if (!this.scoreModel[systemMeasureIndex]) {
-                    this.scoreModel[systemMeasureIndex] = [];
-                }
-
-                this.scoreModel[systemMeasureIndex].push(measureModel);
-            });
-
-            const minStaveMeasureWidth = maxNoteStartX + this.formatter.preCalculateMinTotalWidth(voices);
-            const systemMeasureWidth = minStaveMeasureWidth * MEASURE_WIDTH_FACTOR;
-            this.systemMeasureWidths[systemMeasureIndex] = minStaveMeasureWidth;
-            this.formatter.format(voices, systemMeasureWidth);
+export function createScore(staves: StaveConfig[]): Score {
+    const formatter = new VF.Formatter();
+    const systemMeasureConfig = getSystemMeasureConfig();
+    return systemMeasureConfig.map(systemMeasure => {
+        let maxNoteStartX = 0;
+        const voices: VexVoice[] = [];
+        const measures = systemMeasure.map(staveMeasure => {
+            // TODO: cache measure model by measure/stave indexes
+            //       this will help with component memoization/perf in future
+            const measure = new MeasureModel(staveMeasure);
+            const noteStartX = measure.stave.getNoteStartX();
+            if (noteStartX > maxNoteStartX) {
+                maxNoteStartX = noteStartX;
+            }
+            voices.push(measure.voice);
+            return measure;
         });
-    }
+
+        const minStaveMeasureWidth = maxNoteStartX + formatter.preCalculateMinTotalWidth(voices);
+        const width = minStaveMeasureWidth * MEASURE_WIDTH_FACTOR;
+
+        formatter.format(voices, width);
+
+        return {
+            measures,
+            width,
+        };
+    });
 
     /**
-     * Set system measures indexed by measure number
+     * Get system measures indexed by measure number
      * helpful for chronological operations
      */
-    deriveSystemMeasures(): void {
+    function getSystemMeasureConfig() {
         const initSystemMeasures: MeasureConfig[][] = [];
-        this.systemMeasures = this.staves.reduce((acc, stave) => {
+        return staves.reduce((acc, stave) => {
             const {clef} = stave;
             stave.measures?.forEach((measure, measureIndex) => {
                 const isFirstMeasure = measureIndex === 0;
@@ -81,14 +71,4 @@ class ScoreModel {
             return acc;
         }, initSystemMeasures);
     }
-
-    getSystemMeasures(): SystemMeasure[] {
-        return this.systemMeasures;
-    }
-
-    getSystemMeasureWidth(systemMeasureIndex: number): number | undefined {
-        return this.systemMeasureWidths[systemMeasureIndex];
-    }
 }
-
-export default ScoreModel;

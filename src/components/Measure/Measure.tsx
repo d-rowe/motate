@@ -23,21 +23,9 @@ export type Props = {
     formatter?: BaseFormatter,
 };
 
-type State = {
-    beams?: VexBeam[],
-    stave?: VexStave,
-    voice?: VexVoice,
-    width?: number,
-};
-
-class Measure extends PureComponent<Props, State> {
+class Measure extends PureComponent<Props> {
     private ref = React.createRef<HTMLDivElement>();
     private container?: HTMLDivElement | null;
-    static defaultProps = {
-        hasBegBarline: true,
-        hasEndBarline: true,
-        showClef: true,
-    };
 
     constructor(props: Props) {
         super(props);
@@ -58,10 +46,11 @@ class Measure extends PureComponent<Props, State> {
     }
 
     render(): ReactChild {
+        const {width = 200} = this.props
         return <div
             ref={this.ref}
             style={{
-                width: '200px',
+                width: `${width}px`,
                 height: '125px',
                 position: 'relative',
             }}

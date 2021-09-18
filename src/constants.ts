@@ -35,7 +35,7 @@ export type MeasureConfig = {
     showTimeSignature?: boolean,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    chordConfigs?: ChordConfig[],
+    chords?: ChordConfig[],
     measureIndex?: number,
     staveIndex?: number,
     formatter?: BaseFormatter,

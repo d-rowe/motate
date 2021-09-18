@@ -16,7 +16,7 @@ Default.args = {
   clef: 'treble',
   measures: [
     {
-      chordConfigs: [
+      chords: [
         {pitches: ['c4', 'e4', 'g4'], duration: 4},
         {pitches: ['c4', 'f4', 'a4'], duration: 4},
         {pitches: ['b3', 'd4', 'f4', 'g4'], duration: 4},
@@ -24,7 +24,7 @@ Default.args = {
       ]
     },
     {
-      chordConfigs: [
+      chords: [
         {pitches: ['c4'], duration: 4},
         {pitches: ['c4'], duration: 4},
         {pitches: ['c4'], duration: 4},
