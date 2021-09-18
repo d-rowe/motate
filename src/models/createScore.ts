@@ -54,6 +54,9 @@ export default function createScore(staves: StaveConfig[]): Score {
     /**
      * Get system measures indexed by measure number
      * helpful for chronological operations
+     *
+     * Essentially rotates staves matrix from
+     * being stave indexed to being measure indexed
      */
     function getSystemMeasureConfig() {
         const initSystemMeasures: MeasureConfig[][] = [];
@@ -61,11 +64,7 @@ export default function createScore(staves: StaveConfig[]): Score {
             const {clef} = stave;
             stave.measures?.forEach((measure, measureIndex) => {
                 const isFirstMeasure = measureIndex === 0;
-
-                if (!acc[measureIndex]) {
-                    acc[measureIndex] = [];
-                }
-
+                acc[measureIndex] = acc[measureIndex] || [];
                 acc[measureIndex].push({
                     ...measure,
                     clef,

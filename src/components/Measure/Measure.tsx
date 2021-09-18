@@ -1,4 +1,4 @@
-import React, {PureComponent, ReactChild} from 'react';
+import React, {PureComponent} from 'react';
 import styled from '@emotion/styled';
 import renderer from './renderer';
 

@@ -1,14 +1,9 @@
-import React from 'react';
+import styled from '@emotion/styled';
+import {VerticalContainer} from '../base';
 
-function Right() {
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            margin: '42px 0',
-            borderLeft: '4px solid black',
-        }}/>
-    );
-}
+const Right = styled(VerticalContainer)`
+    margin: 42px 0;
+    border-left: 4px solid black;
+`;
 
 export default Right;
