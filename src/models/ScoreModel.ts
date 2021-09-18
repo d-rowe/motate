@@ -7,7 +7,7 @@ import {
 import MeasureModel from './MeasureModel';
 
 // Width factor (min renderable width = 1)
-const MEASURE_WIDTH_FACTOR = 1.3;
+const MEASURE_WIDTH_FACTOR = 2;
 
 type SystemMeasure = {
     measures: MeasureModel[],
@@ -34,14 +34,14 @@ export function createScore(staves: StaveConfig[]): Score {
             return measure;
         });
 
-        const minStaveMeasureWidth = maxNoteStartX + formatter.preCalculateMinTotalWidth(voices);
-        const width = minStaveMeasureWidth * MEASURE_WIDTH_FACTOR;
+        const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
+        const voiceWidth = minVoiceWidth * MEASURE_WIDTH_FACTOR;
 
-        formatter.format(voices, width);
+        formatter.format(voices, voiceWidth);
 
         return {
             measures,
-            width,
+            width: maxNoteStartX + voiceWidth,
         };
     });
 
