@@ -30,7 +30,7 @@ class MeasureModel {
             timeSignature,
             showClef,
             showTimeSignature,
-            chordConfigs: chords = [],
+            chords = [],
             measureIndex,
             staveIndex,
         } = measure;

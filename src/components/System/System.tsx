@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import ScoreModel from '../../models/ScoreModel';
+import {createScore} from '../../models/ScoreModel';
 import Left from './Left';
 import Right from './Right';
 import SystemMeasure from '../SystemMeasure';
@@ -12,27 +12,16 @@ export type Props = {
     showInstrumentLabels: boolean,
 };
 
-type State = {
-    scoreModel: ScoreModel,
-};
 
-class System extends PureComponent<Props, State> {
+class System extends PureComponent<Props> {
     static defaultProps = {
         showInstrumentLabels: true,
     };
 
-    constructor(props: Props) {
-        super(props);
-        this.state = getStateFromProps(props);
-    }
-
-    static getDerivedStateFromProps(props: Props): State {
-        return getStateFromProps(props);
-    }
 
     render() {
         const {showInstrumentLabels, staves} = this.props;
-        const systemMeasures = this.state.scoreModel.getSystemMeasures();
+        const score = createScore(staves);
 
         return (
             <FlexContainer>
@@ -41,7 +30,7 @@ class System extends PureComponent<Props, State> {
                     showInstrumentLabels={showInstrumentLabels}
                 />
                 <FlexContainer>
-                    {systemMeasures.map(systemMeasure => (
+                    {score.map(systemMeasure => (
                         <SystemMeasure systemMeasure={systemMeasure} />
                     ))}
                 </FlexContainer>
@@ -49,11 +38,6 @@ class System extends PureComponent<Props, State> {
             </FlexContainer>
         )
     }
-}
-
-function getStateFromProps({staves}: Props): State {
-    const scoreModel = new ScoreModel(staves);
-    return {scoreModel};
 }
 
 export default System;

@@ -1,19 +1,17 @@
 import React from 'react';
 import Measure from './Measure';
-import type {SystemMeasure as SystemMeasureType} from '../constants';
 
 /**
  * A measure that can span multiple instruments (or "staves")
  */
 
-type Props = {
-    systemMeasure: SystemMeasureType,
-};
-
 function SystemMeasure({systemMeasure}: Props): JSX.Element {
+    const {measures, width} = systemMeasure;
     return (
         <div className='system-measure'>
-            {systemMeasure.map(measure => <Measure {...measure} />)}
+            {measures.map(measure => (
+                <Measure {...measure} width={width} />
+            ))}
         </div>
     );
 }
