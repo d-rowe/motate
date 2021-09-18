@@ -16,6 +16,12 @@ type SystemMeasure = {
 
 type Score = SystemMeasure[];
 
+/**
+ * Create formatted score model from stave configs
+ *
+ * TODO: move note creation from Measure to here
+ *       so we can properly take into account affordances
+ */
 export default function createScore(staves: StaveConfig[]): Score {
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();

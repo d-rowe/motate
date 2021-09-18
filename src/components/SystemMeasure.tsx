@@ -9,9 +9,9 @@ import Measure from './Measure';
 function SystemMeasure({systemMeasure}): JSX.Element {
     const {measures, width} = systemMeasure;
     return (
-        <div className='system-measure'>
+        <div className='system-measure' style={{width}}>
             {measures.map(measure => (
-                <Measure {...measure} width={width} />
+                <Measure {...measure} />
             ))}
         </div>
     );

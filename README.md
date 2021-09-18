@@ -9,11 +9,11 @@ Motate is built off of [VexFlow](https://github.com/0xfe/vexflow).
 Let's create a simple duet of the first measure of Twinkle Twinkle Little Star.
 
 ```javascript
-import {System} from 'motate';
+import Motate from 'motate';
 
 function App() {
     return (
-        <System
+        <Motate
             staves: [
                 {
                     name: 'Violin',

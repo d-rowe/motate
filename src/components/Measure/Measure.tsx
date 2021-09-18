@@ -1,4 +1,5 @@
 import React, {PureComponent, ReactChild} from 'react';
+import styled from '@emotion/styled';
 import renderer from './renderer';
 
 import type BaseFormatter from '../../formatters/BaseFormatter';
@@ -8,6 +9,12 @@ import type {
     VexStave,
     VexVoice
 } from '../../constants';
+
+const MeasureContainer = styled.div`
+    position: relative;
+    height: 125px;
+    width: 100%;
+`;
 
 export type Props = {
     clef?: string,
@@ -21,6 +28,9 @@ export type Props = {
     measureIndex?: number,
     staveIndex?: number,
     formatter?: BaseFormatter,
+    beams: VexBeam[],
+    stave?: VexStave,
+    voice?: VexVoice,
 };
 
 class Measure extends PureComponent<Props> {
@@ -45,16 +55,8 @@ class Measure extends PureComponent<Props> {
         this.renderNotation();
     }
 
-    render(): ReactChild {
-        const {width = 200} = this.props
-        return <div
-            ref={this.ref}
-            style={{
-                width: `${width}px`,
-                height: '125px',
-                position: 'relative',
-            }}
-        />;
+    render() {
+        return <MeasureContainer ref={this.ref} />;
     }
 
     renderNotation() {
@@ -62,7 +64,11 @@ class Measure extends PureComponent<Props> {
             throw new Error('Cannot render notation before container is initialized');
         }
 
-        const {beams = [], stave, voice} = this.props;
+        const {
+            beams = [],
+            stave,
+            voice
+        } = this.props;
         if (!stave || !voice) {
             return;
         }
