@@ -1,10 +1,9 @@
 import React, {PureComponent, ReactChild} from 'react';
-import MeasureModel from '../../models/MeasureModel';
 import renderer from './renderer';
 
 import type BaseFormatter from '../../formatters/BaseFormatter';
 import type {
-    Chord,
+    ChordConfig,
     VexBeam,
     VexStave,
     VexVoice
@@ -18,7 +17,7 @@ export type Props = {
     width?: number,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    chords?: Chord[],
+    chordConfigs?: ChordConfig[],
     measureIndex?: number,
     staveIndex?: number,
     formatter?: BaseFormatter,
@@ -59,38 +58,22 @@ class Measure extends PureComponent<Props, State> {
     }
 
     render(): ReactChild {
-        const {width} = this.state;
         return <div
             ref={this.ref}
             style={{
-                width: `${width}px`,
+                width: '200px',
                 height: '125px',
                 position: 'relative',
             }}
         />;
     }
 
-    // static getDerivedStateFromProps(props: Props): State {
-    //     const {
-    //         beams,
-    //         voice,
-    //         stave,
-    //         width
-    //     } = new MeasureModel(props);
-    //     return {
-    //         beams,
-    //         voice,
-    //         stave,
-    //         width
-    //     };
-    // }
-
     renderNotation() {
         if (!this.container) {
             throw new Error('Cannot render notation before container is initialized');
         }
 
-        const {beams = [], stave, voice} = this.state;
+        const {beams = [], stave, voice} = this.props;
         if (!stave || !voice) {
             return;
         }

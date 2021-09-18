@@ -23,26 +23,26 @@ export type VexFormatter = Vex.Flow.Formatter;
 export type VexStave = Vex.Flow.Stave;
 export type VexVoice = Vex.Flow.Voice;
 
-export type Chord = {
+export type ChordConfig = {
     duration: number,
     pitches: string[],
 };
 
-export type Measure = {
+export type MeasureConfig = {
     clef?: string,
     showClef?: boolean,
     timeSignature?: string,
     showTimeSignature?: boolean,
     hasBegBarline?: boolean,
     hasEndBarline?: boolean,
-    chords?: Chord[],
+    chordConfigs?: ChordConfig[],
     measureIndex?: number,
     staveIndex?: number,
     formatter?: BaseFormatter,
 };
 
-export type Stave = {
+export type StaveConfig = {
     name?: string,
     clef?: string,
-    measures?: Measure[],
+    measures?: MeasureConfig[],
 };

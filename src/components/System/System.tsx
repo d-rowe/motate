@@ -2,54 +2,58 @@ import React, {PureComponent} from 'react';
 import ScoreModel from '../../models/ScoreModel';
 import Left from './Left';
 import Right from './Right';
-import Stave from '../Stave';
+import SystemMeasure from '../SystemMeasure';
+import {FlexContainer} from '../base';
 
-import type {Stave as StaveType} from '../../constants';
+import type {StaveConfig as StaveType} from '../../constants';
 
 export type Props = {
     staves: StaveType[],
     showInstrumentLabels: boolean,
 };
 
-class System extends PureComponent<Props> {
+type State = {
+    scoreModel: ScoreModel,
+};
+
+class System extends PureComponent<Props, State> {
     static defaultProps = {
         showInstrumentLabels: true,
     };
 
     constructor(props: Props) {
         super(props);
-        const model = new ScoreModel(this.props.staves);
+        this.state = getStateFromProps(props);
+    }
+
+    static getDerivedStateFromProps(props: Props): State {
+        return getStateFromProps(props);
     }
 
     render() {
-        const {
-            staves,
-            showInstrumentLabels,
-        } = this.props;
+        const {showInstrumentLabels, staves} = this.props;
+        const systemMeasures = this.state.scoreModel.getSystemMeasures();
+
         return (
-            <div style={{display: 'flex'}}>
+            <FlexContainer>
                 <Left
                     staves={staves}
                     showInstrumentLabels={showInstrumentLabels}
                 />
-                <div>
-                    {staves.map(({name, clef, measures}, i) => (
-                        <Stave
-                            name={name}
-                            measures={measures}
-                            clef={clef}
-                            hasBegBarline={false}
-                            hasEndBarline={false}
-                            key={i}
-                            staveIndex={i}
-                            showName={false}
-                        />
+                <FlexContainer>
+                    {systemMeasures.map(systemMeasure => (
+                        <SystemMeasure systemMeasure={systemMeasure} />
                     ))}
-                </div>
+                </FlexContainer>
                 <Right />
-            </div>
+            </FlexContainer>
         )
     }
+}
+
+function getStateFromProps({staves}: Props): State {
+    const scoreModel = new ScoreModel(staves);
+    return {scoreModel};
 }
 
 export default System;

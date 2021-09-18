@@ -2,8 +2,9 @@ import React, {PureComponent} from 'react';
 import Left from './Left';
 import Measure from '../Measure';
 import BaseFormatter from '../../formatters/BaseFormatter';
-import {Measure as MeasureType} from '../../constants';
+import {MeasureConfig as MeasureType} from '../../constants';
 import StaveFormatter from '../../formatters/StaveFormatter';
+import {FlexContainer} from '../base';
 
 export type Props = {
     name?: string,
@@ -43,10 +44,7 @@ class Stave extends PureComponent<Props> {
             formatter = new StaveFormatter({width}),
         } = this.props;
         return (
-            <div
-                aria-label='stave'
-                style={{display: 'flex'}}
-            >
+            <FlexContainer aria-label='stave'>
                 {name && showName && <Left name={name} />}
                 {measures.map((measure, i) => (
                     <Measure
@@ -62,7 +60,7 @@ class Stave extends PureComponent<Props> {
                         formatter={formatter}
                     />
                 ))}
-            </div>
+            </FlexContainer>
         );
     }
 }

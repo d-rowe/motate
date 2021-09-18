@@ -19,7 +19,7 @@ Default.args = {
             clef: 'treble',
             measures: [
                 {
-                  chords: [
+                  chordConfigs: [
                     {pitches: ['c4'], duration: 4},
                     {pitches: ['c4'], duration: 4},
                     {pitches: ['g4'], duration: 4},
@@ -27,7 +27,7 @@ Default.args = {
                   ]
                 },
                 {
-                  chords: [
+                  chordConfigs: [
                     {pitches: ['a4'], duration: 4},
                     {pitches: ['a4'], duration: 4},
                     {pitches: ['g4'], duration: 2},
@@ -41,7 +41,7 @@ Default.args = {
             clef: 'bass',
             measures: [
                 {
-                  chords: [
+                  chordConfigs: [
                     {pitches: ['c2'], duration: 4},
                     {pitches: ['c3'], duration: 4},
                     {pitches: ['e3'], duration: 4},
@@ -49,7 +49,7 @@ Default.args = {
                   ]
                 },
                 {
-                  chords: [
+                  chordConfigs: [
                     {pitches: ['g3'], duration: 4},
                     {pitches: ['d3'], duration: 4},
                     {pitches: ['c3'], duration: 2},
