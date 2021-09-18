@@ -3,9 +3,10 @@ import Measure from './Measure';
 
 /**
  * A measure that can span multiple instruments (or "staves")
+ *
+ * TODO: add prop type
  */
-
-function SystemMeasure({systemMeasure}: Props): JSX.Element {
+function SystemMeasure({systemMeasure}): JSX.Element {
     const {measures, width} = systemMeasure;
     return (
         <div className='system-measure'>
