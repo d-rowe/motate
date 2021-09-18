@@ -1,5 +1,5 @@
 import {CLEFS, VF} from '../constants';
-import createVexNotes from '../components/Measure/createVexNotes';
+import createVexNotes from './createVexNotes';
 
 import type {
     MeasureConfig,

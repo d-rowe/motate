@@ -1,6 +1,10 @@
 import Vex from 'vexflow';
 
-import type {VexBeam, VexStave, VexVoice} from '../../constants';
+import type {
+    VexBeam,
+    VexStave,
+    VexVoice
+} from '../../constants';
 
 const Renderer = Vex.Flow.Renderer;
 const RENDERER_BACKEND = Renderer.Backends.SVG;

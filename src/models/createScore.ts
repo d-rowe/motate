@@ -25,6 +25,7 @@ type Score = SystemMeasure[];
 export default function createScore(staves: StaveConfig[]): Score {
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();
+
     return systemMeasureConfig.map(systemMeasure => {
         let maxNoteStartX = 0;
         const voices: VexVoice[] = [];
@@ -55,7 +56,7 @@ export default function createScore(staves: StaveConfig[]): Score {
      * Get system measures indexed by measure number
      * helpful for chronological operations
      *
-     * Essentially rotates staves matrix from
+     * This esentially just rotates the staves matrix from
      * being stave indexed to being measure indexed
      */
     function getSystemMeasureConfig() {

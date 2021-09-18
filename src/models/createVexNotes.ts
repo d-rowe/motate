@@ -1,6 +1,6 @@
 import Vex from 'vexflow';
 
-import type {ChordConfig} from '../../constants';
+import type {ChordConfig} from '../constants';
 
 const VF = Vex.Flow;
 const SPN_REGEX = /^([a-gA-G])([b|#|x]*)?(-?[0-9]*)?$/;
