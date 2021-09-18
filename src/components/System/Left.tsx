@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
-import type {Stave} from '../../constants';
+import type {StaveConfig} from '../../constants';
 
 type Props = {
-    staves: Stave[],
+    staves: StaveConfig[],
     showInstrumentLabels: boolean,
 };
 

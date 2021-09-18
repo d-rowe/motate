@@ -1,6 +1,6 @@
 import Vex from 'vexflow';
 
-import type {Chord} from '../../constants';
+import type {ChordConfig} from '../../constants';
 
 const VF = Vex.Flow;
 const SPN_REGEX = /^([a-gA-G])([b|#|x]*)?(-?[0-9]*)?$/;
@@ -11,8 +11,8 @@ type ParsedPitch = {
     octave: string | null,
 };
 
-export default function createVexNotes(chords: Chord[], clef: string) {
-    return chords.map(({duration, pitches}) => createSingleVexNote(pitches, clef, duration));
+export default function createVexNotes(chordConfigs: ChordConfig[], clef: string) {
+    return chordConfigs.map(({duration, pitches}) => createSingleVexNote(pitches, clef, duration));
 }
 
 function createSingleVexNote(pitches: string[], clef: string, duration: number) {

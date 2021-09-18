@@ -1,9 +1,8 @@
 import {CLEFS, VF} from '../constants';
 import createVexNotes from '../components/Measure/createVexNotes';
-import Formatter from '../formatters/MeasureFormatter';
 
 import type {
-    Measure,
+    MeasureConfig,
     VexBeam,
     VexStave,
     VexVoice
@@ -16,7 +15,7 @@ const DEFAULT_INITIAL_WIDTH = 200;
 
 class MeasureModel {
     beams: VexBeam[];
-    private config: Measure;
+    private measure: MeasureConfig;
     private clef: string;
     private timeSignature: string;
     stave: VexStave;
@@ -24,17 +23,17 @@ class MeasureModel {
     measureIndex?: number;
     staveIndex?: number;
 
-    constructor(config: Measure) {
-        this.config = config;
+    constructor(measure: MeasureConfig) {
+        this.measure = measure;
         const {
             clef,
             timeSignature,
             showClef,
             showTimeSignature,
-            chords = [],
+            chordConfigs: chords = [],
             measureIndex,
             staveIndex,
-        } = config;
+        } = measure;
 
         this.measureIndex = measureIndex;
         this.staveIndex = staveIndex;
@@ -54,7 +53,7 @@ class MeasureModel {
     }
 
     private setBarlines() {
-        const {hasBegBarline, hasEndBarline} = this.config;
+        const {hasBegBarline, hasEndBarline} = this.measure;
         if (hasBegBarline === false) {
             this.stave.setBegBarType(NO_BARLINE);
         }
