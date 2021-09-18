@@ -14,13 +14,12 @@ type SystemMeasure = {
     width: number,
 }
 
+type SystemMesasureConfig = MeasureConfig[][];
+
 type Score = SystemMeasure[];
 
 /**
  * Create formatted score model from stave configs
- *
- * TODO: move note creation from Measure to here
- *       so we can properly take into account affordances
  */
 export default function createScore(staves: StaveConfig[]): Score {
     const formatter = new VF.Formatter();
@@ -43,13 +42,14 @@ export default function createScore(staves: StaveConfig[]): Score {
 
         const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
         const voiceWidth = minVoiceWidth * MEASURE_WIDTH_FACTOR;
+        const width = maxNoteStartX + voiceWidth;
 
+        // update staves to calculated width
+        measures.forEach(({stave}) => stave.setWidth(width));
+        // format cross-stave voices (align across x axis)
         formatter.format(voices, voiceWidth);
 
-        return {
-            measures,
-            width: maxNoteStartX + voiceWidth,
-        };
+        return {measures, width};
     });
 
     /**
@@ -59,24 +59,22 @@ export default function createScore(staves: StaveConfig[]): Score {
      * This esentially just rotates the staves matrix from
      * being stave indexed to being measure indexed
      */
-    function getSystemMeasureConfig() {
-        const initSystemMeasures: MeasureConfig[][] = [];
-        return staves.reduce((acc, stave) => {
-            const {clef} = stave;
+    function getSystemMeasureConfig(): SystemMesasureConfig {
+        const initSystemMeasures: SystemMesasureConfig = [];
+        return staves.reduce((systemMeasures, stave) => {
             stave.measures?.forEach((measure, measureIndex) => {
                 const isFirstMeasure = measureIndex === 0;
-                acc[measureIndex] = acc[measureIndex] || [];
-                acc[measureIndex].push({
+                systemMeasures[measureIndex] = systemMeasures[measureIndex] || [];
+                systemMeasures[measureIndex].push({
                     ...measure,
-                    clef,
+                    clef: stave.clef,
                     hasBegBarline: !isFirstMeasure,
-                    hasEndBarline: false,
                     showClef: isFirstMeasure,
                     showTimeSignature: isFirstMeasure,
                 });
             });
 
-            return acc;
+            return systemMeasures;
         }, initSystemMeasures);
     }
 }

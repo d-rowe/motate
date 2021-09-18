@@ -54,10 +54,10 @@ class MeasureModel {
 
     private setBarlines() {
         const {hasBegBarline, hasEndBarline} = this.measure;
-        if (hasBegBarline === false) {
+        if (!hasBegBarline) {
             this.stave.setBegBarType(NO_BARLINE);
         }
-        if (hasEndBarline === false) {
+        if (!hasEndBarline) {
             this.stave.setEndBarType(NO_BARLINE)
         }
     }
