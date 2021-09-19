@@ -76,31 +76,34 @@ export default function createScore(
         }, initSystemMeasures);
     }
 
-    function formatSystemMeasure(systemMeasure: MeasureConfig[]): void {
-        const {
-            measures,
-            width,
-            voices,
-            voiceWidth,
-        } = calculateSystemMeasure(systemMeasure);
+    function formatSystemMeasure(systemMeasure: MeasureConfig[], measureIndex: number): void {
+        let calculatedSystemMeasure = calculateSystemMeasure(
+            systemMeasure,
+            measureIndex === 0,
+        );
 
-        const nextSystemWidth = currentSystemWidth + width;
+        const nextSystemWidth = currentSystemWidth + calculatedSystemMeasure.width;
         if (nextSystemWidth > maxSystemWidth) {
             // Not enough space in current system,
             // we have to start a new one
             currentSystemWidth = 0;
             currentSystemIndex++;
+            // re-calculate system measure with clef and timesig visible
+            calculatedSystemMeasure = calculateSystemMeasure(systemMeasure, true);
             /**
-             * TODO:
-             *   1: re-calculate system measure with
-             *      clef and timesig visible
-             *
-             *   2: re-calculate/format entire last
-             *      system to fill width entirely
+             * TODO: re-calculate/format entire last
+             *       system to fill width entirely
              */
         } else {
             currentSystemWidth = nextSystemWidth;
         }
+
+        const {
+            measures,
+            voices,
+            voiceWidth,
+            width,
+        } = calculatedSystemMeasure;
 
         // update measures to newly calculated width
         measures.forEach(m => m.setWidth(width));
@@ -134,12 +137,17 @@ export default function createScore(
 
     function calculateSystemMeasure(
         systemMeasure: MeasureConfig[],
+        isStartOfSystem: boolean = false,
         voiceWidthFactor?: number,
     ): CalculatedSystemMeasure {
         let noteStartX = 0;
         const voices: VexVoice[] = [];
         const measures = systemMeasure.map(staveMeasure => {
-            const measure = new MeasureModel(staveMeasure);
+            const measure = new MeasureModel({
+                ...staveMeasure,
+                showClef: isStartOfSystem,
+                showTimeSignature: isStartOfSystem,
+            });
             noteStartX = Math.max(measure.stave.getNoteStartX(), noteStartX);
             voices.push(measure.voice);
             return measure;
