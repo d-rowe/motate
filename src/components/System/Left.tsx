@@ -5,7 +5,7 @@ import {VerticalContainer} from '../base';
 import type {StaveConfig} from '../../constants';
 
 const LeftContainer = styled(VerticalContainer)`
-    justify-ttems: stretch;
+    justify-items: stretch;
     justify-content: space-between;
     padding: 0 12px 0 0;
     margin: 42px 0;
@@ -15,6 +15,7 @@ const LeftContainer = styled(VerticalContainer)`
 
 const InstrumentLabel = styled.p`
     margin: 10px 0 12px;
+    white-space: nowrap;
 `;
 
 type Props = {

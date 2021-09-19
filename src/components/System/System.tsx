@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import createScore from '../../models/createScore';
+import createSystem from '../../models/createScore';
 import Left from './Left';
 import Right from './Right';
 import SystemMeasure from '../SystemMeasure';
@@ -21,7 +21,7 @@ class System extends PureComponent<Props> {
 
     render() {
         const {showInstrumentLabels, staves} = this.props;
-        const score = createScore(staves);
+        const system = createSystem(staves);
 
         return (
             <FlexContainer>
@@ -30,8 +30,11 @@ class System extends PureComponent<Props> {
                     showInstrumentLabels={showInstrumentLabels}
                 />
                 <FlexContainer>
-                    {score.map(systemMeasure => (
-                        <SystemMeasure systemMeasure={systemMeasure} />
+                    {system.map((systemMeasure, i) => (
+                        <SystemMeasure
+                            key={i}
+                            systemMeasure={systemMeasure}
+                        />
                     ))}
                 </FlexContainer>
                 <Right />

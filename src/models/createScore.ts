@@ -1,30 +1,31 @@
-import {
-    MeasureConfig,
-    StaveConfig,
-    VexVoice,
-    VF
-} from '../constants';
+import {VF} from '../constants';
 import MeasureModel from './MeasureModel';
 
+import type {
+    StaveConfig,
+    VexVoice,
+} from '../constants';
+import type {
+    SystemMeasureConfig,
+    System,
+} from './constants';
+
 // Width factor (min renderable width = 1)
-const MEASURE_WIDTH_FACTOR = 2;
-
-type SystemMeasure = {
-    measures: MeasureModel[],
-    width: number,
-}
-
-type SystemMesasureConfig = MeasureConfig[][];
-
-type Score = SystemMeasure[];
+const VOICE_WIDTH_FACTOR = 2.2;
+const DEFAULT_MAX_WIDTH = 500;
 
 /**
  * Create formatted score model from stave configs
  */
-export default function createScore(staves: StaveConfig[]): Score {
+export default function createSystem(
+    staves: StaveConfig[],
+    width?: number,
+): System {
+    const maxSystemWidth = width || DEFAULT_MAX_WIDTH;
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();
 
+    let currentSystemWidth = 0;
     return systemMeasureConfig.map(systemMeasure => {
         let maxNoteStartX = 0;
         const voices: VexVoice[] = [];
@@ -41,8 +42,17 @@ export default function createScore(staves: StaveConfig[]): Score {
         });
 
         const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
-        const voiceWidth = minVoiceWidth * MEASURE_WIDTH_FACTOR;
+        const voiceWidth = minVoiceWidth * VOICE_WIDTH_FACTOR;
         const width = maxNoteStartX + voiceWidth;
+
+        // TODO: complete
+        if (currentSystemWidth + width > maxSystemWidth) {
+            console.log('need new system');
+            currentSystemWidth = 0;
+        } else {
+            currentSystemWidth += width;
+        }
+        console.log(currentSystemWidth);
 
         // update staves to calculated width
         measures.forEach(({stave}) => stave.setWidth(width));
@@ -59,8 +69,8 @@ export default function createScore(staves: StaveConfig[]): Score {
      * This esentially just rotates the staves matrix from
      * being stave indexed to being measure indexed
      */
-    function getSystemMeasureConfig(): SystemMesasureConfig {
-        const initSystemMeasures: SystemMesasureConfig = [];
+    function getSystemMeasureConfig(): SystemMeasureConfig {
+        const initSystemMeasures: SystemMeasureConfig = [];
         return staves.reduce((systemMeasures, stave) => {
             stave.measures?.forEach((measure, measureIndex) => {
                 const isFirstMeasure = measureIndex === 0;

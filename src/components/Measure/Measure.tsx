@@ -2,13 +2,7 @@ import React, {PureComponent} from 'react';
 import styled from '@emotion/styled';
 import renderer from './renderer';
 
-import type BaseFormatter from '../../formatters/BaseFormatter';
-import type {
-    ChordConfig,
-    VexBeam,
-    VexStave,
-    VexVoice
-} from '../../constants';
+import type MeasureModel from '../../models/MeasureModel';
 
 const MeasureContainer = styled.div`
     position: relative;
@@ -17,20 +11,7 @@ const MeasureContainer = styled.div`
 `;
 
 export type Props = {
-    clef?: string,
-    showClef?: boolean,
-    timeSignature?: string,
-    showTimeSignature?: boolean,
-    width?: number,
-    hasBegBarline?: boolean,
-    hasEndBarline?: boolean,
-    chordConfigs?: ChordConfig[],
-    measureIndex?: number,
-    staveIndex?: number,
-    formatter?: BaseFormatter,
-    beams: VexBeam[],
-    stave?: VexStave,
-    voice?: VexVoice,
+    measure: MeasureModel,
 };
 
 class Measure extends PureComponent<Props> {
@@ -68,7 +49,7 @@ class Measure extends PureComponent<Props> {
             beams = [],
             stave,
             voice
-        } = this.props;
+        } = this.props.measure;
         if (!stave || !voice) {
             return;
         }
