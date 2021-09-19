@@ -1,14 +1,15 @@
 import React, {PureComponent} from 'react';
-import createSystem from '../../models/createScore';
 import Left from './Left';
 import Right from './Right';
 import SystemMeasure from '../SystemMeasure';
 import {FlexContainer} from '../base';
 
 import type {StaveConfig as StaveType} from '../../constants';
+import type {System as SystemType} from '../../models/constants';
 
 export type Props = {
     staves: StaveType[],
+    system: SystemType,
     showInstrumentLabels: boolean,
 };
 
@@ -20,9 +21,7 @@ class System extends PureComponent<Props> {
 
 
     render() {
-        const {showInstrumentLabels, staves} = this.props;
-        const system = createSystem(staves);
-
+        const {staves, system, showInstrumentLabels} = this.props;
         return (
             <FlexContainer>
                 <Left

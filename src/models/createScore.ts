@@ -4,63 +4,75 @@ import MeasureModel from './MeasureModel';
 import type {
     StaveConfig,
     VexVoice,
+    MeasureConfig,
 } from '../constants';
 import type {
     SystemMeasureConfig,
-    System,
+    Score,
 } from './constants';
 
 // Width factor (min renderable width = 1)
 const VOICE_WIDTH_FACTOR = 2.2;
-const DEFAULT_MAX_WIDTH = 500;
+const DEFAULT_MAX_WIDTH = 800;
 
 /**
  * Create formatted score model from stave configs
  */
-export default function createSystem(
+export default function createScore(
     staves: StaveConfig[],
     width?: number,
-): System {
+): Score {
     const maxSystemWidth = width || DEFAULT_MAX_WIDTH;
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();
 
+    const score: Score = [];
     let currentSystemWidth = 0;
-    return systemMeasureConfig.map(systemMeasure => {
-        let maxNoteStartX = 0;
-        const voices: VexVoice[] = [];
-        const measures = systemMeasure.map(staveMeasure => {
-            // TODO: cache measure model by measure/stave indexes
-            //       this will help with component memoization/perf in future
-            const measure = new MeasureModel(staveMeasure);
-            const noteStartX = measure.stave.getNoteStartX();
-            if (noteStartX > maxNoteStartX) {
-                maxNoteStartX = noteStartX;
-            }
-            voices.push(measure.voice);
-            return measure;
-        });
+    let currentSystemIndex = 0;
+    systemMeasureConfig.forEach(systemMeasure => {
+        const {
+            measures,
+            voices,
+            noteStartX,
+        } = processSystemMeasures(systemMeasure);
 
         const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
         const voiceWidth = minVoiceWidth * VOICE_WIDTH_FACTOR;
-        const width = maxNoteStartX + voiceWidth;
+        const width = noteStartX + voiceWidth;
 
         // TODO: complete
         if (currentSystemWidth + width > maxSystemWidth) {
             console.log('need new system');
             currentSystemWidth = 0;
+            currentSystemIndex++;
         } else {
             currentSystemWidth += width;
         }
-        console.log(currentSystemWidth);
 
         // update staves to calculated width
         measures.forEach(({stave}) => stave.setWidth(width));
         // format cross-stave voices (align across x axis)
         formatter.format(voices, voiceWidth);
 
-        return {measures, width};
+        // Assure system entry exists
+        score[currentSystemIndex] = score[currentSystemIndex] || [];
+
+        // Hide begBarLine if first system measure in system
+        if (!score[currentSystemIndex].length) {
+            measures.forEach(m => {
+                m.clearBegBarLine();
+
+                if (currentSystemIndex !== 0) {
+                    m.showTimeSignature();
+                    m.showClef();
+                }
+            });
+        }
+        // need to push this to the correct system within score
+        score[currentSystemIndex].push({measures, width});
     });
+
+    return score;
 
     /**
      * Get system measures indexed by measure number
@@ -86,5 +98,27 @@ export default function createSystem(
 
             return systemMeasures;
         }, initSystemMeasures);
+    }
+}
+
+function processSystemMeasures(systemMeasure: MeasureConfig[]) {
+    let noteStartX = 0;
+    const voices: VexVoice[] = [];
+    const measures = systemMeasure.map(staveMeasure => {
+        // TODO: cache measure model by measure/stave indexes
+        //       this will help with component memoization/perf in future
+        const measure = new MeasureModel(staveMeasure);
+        const currentNoteStartX = measure.stave.getNoteStartX();
+        if (currentNoteStartX > noteStartX) {
+            noteStartX = currentNoteStartX;
+        }
+        voices.push(measure.voice);
+        return measure;
+    });
+
+    return {
+        measures,
+        noteStartX,
+        voices,
     }
 }

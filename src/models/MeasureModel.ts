@@ -44,12 +44,25 @@ class MeasureModel {
         this.voice = new VF.Voice({num_beats: 4, beat_value: 4});
 
         this.setBarlines();
-        showClef && this.setClef();
-        showTimeSignature && this.setTimeSignature();
+        showClef && this.showClef();
+        showTimeSignature && this.showTimeSignature();
 
         const vexNotes = createVexNotes(chords, this.clef);
         this.voice.addTickables(vexNotes);
         this.beams = VF.Beam.generateBeams(vexNotes);
+    }
+
+    clearBegBarLine() {
+        this.measure.hasBegBarline = false;
+        this.setBarlines();
+    }
+
+    showTimeSignature() {
+        this.setTimeSignature();
+    }
+
+    showClef() {
+        this.setClef();
     }
 
     private setBarlines() {
