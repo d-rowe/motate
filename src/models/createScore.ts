@@ -12,17 +12,27 @@ import type {
 } from './constants';
 
 // Width factor (min renderable width = 1)
-const VOICE_WIDTH_FACTOR = 2.2;
+const DEFAULT_VOICE_WIDTH_FACTOR = 2.2;
 const DEFAULT_MAX_WIDTH = 700;
 
-type ProcessedSystemMeasure = {
+type CalculatedSystemMeasure = {
     measures: MeasureModel[];
-    noteStartX: number;
     voices: Vex.Flow.Voice[];
+    voiceWidth: number,
+    width: number,
 };
 
 /**
  * Create formatted score model from stave configs
+ *
+ * NOTE:
+ *    this is expensive, and it's worth
+ *    investigating where memoization/other
+ *    perf improvements can be made
+ *
+ *    shallow equality in resulting score's
+ *    members can be used in future to
+ *    prevent unwanted/unnecessary renders
  */
 export default function createScore(
     staves: StaveConfig[],
@@ -36,7 +46,7 @@ export default function createScore(
     let currentSystemWidth = 0;
     let currentSystemIndex = 0;
 
-    systemMeasureConfig.forEach(processSystemMeasure);
+    systemMeasureConfig.forEach(formatSystemMeasure);
 
     return score;
 
@@ -44,7 +54,7 @@ export default function createScore(
      * Get system measures indexed by measure number
      * helpful for chronological operations
      *
-     * This esentially just rotates the staves matrix from
+     * This essentially just rotates the staves matrix from
      * being stave indexed to being measure indexed
      */
     function getSystemMeasureConfig(): SystemMeasureConfig {
@@ -66,27 +76,30 @@ export default function createScore(
         }, initSystemMeasures);
     }
 
-    function processSystemMeasure(systemMeasure: MeasureConfig[]): void {
+    function formatSystemMeasure(systemMeasure: MeasureConfig[]): void {
         const {
             measures,
+            width,
             voices,
-            noteStartX,
-        } = getProcessedSystemMeasures(systemMeasure);
+            voiceWidth,
+        } = calculateSystemMeasure(systemMeasure);
 
-        const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
-        const voiceWidth = minVoiceWidth * VOICE_WIDTH_FACTOR;
-        const width = noteStartX + voiceWidth;
-
-        if (currentSystemWidth + width > maxSystemWidth) {
+        const nextSystemWidth = currentSystemWidth + width;
+        if (nextSystemWidth > maxSystemWidth) {
             // Not enough space in current system,
             // we have to start a new one
             currentSystemWidth = 0;
             currentSystemIndex++;
-            // TODO: we'll have to so some re-formatting
-            //       on the previous system to stretch
-            //       across entire available width
+            /**
+             * TODO:
+             *   1: re-calculate system measure with
+             *      clef and timesig visible
+             *
+             *   2: re-calculate/format entire last
+             *      system to fill width entirely
+             */
         } else {
-            currentSystemWidth += width;
+            currentSystemWidth = nextSystemWidth;
         }
 
         // update measures to newly calculated width
@@ -118,23 +131,28 @@ export default function createScore(
         // need to push this to the correct system within score
         score[currentSystemIndex].push({measures, width});
     }
-}
 
-function getProcessedSystemMeasures(systemMeasure: MeasureConfig[]): ProcessedSystemMeasure {
-    let noteStartX = 0;
-    const voices: VexVoice[] = [];
-    const measures = systemMeasure.map(staveMeasure => {
-        // TODO: cache measure model by measure/stave indexes
-        //       this will help with component memoization/perf in future
-        const measure = new MeasureModel(staveMeasure);
-        noteStartX = Math.max(measure.stave.getNoteStartX(), noteStartX);
-        voices.push(measure.voice);
-        return measure;
-    });
+    function calculateSystemMeasure(
+        systemMeasure: MeasureConfig[],
+        voiceWidthFactor?: number,
+    ): CalculatedSystemMeasure {
+        let noteStartX = 0;
+        const voices: VexVoice[] = [];
+        const measures = systemMeasure.map(staveMeasure => {
+            const measure = new MeasureModel(staveMeasure);
+            noteStartX = Math.max(measure.stave.getNoteStartX(), noteStartX);
+            voices.push(measure.voice);
+            return measure;
+        });
 
-    return {
-        measures,
-        noteStartX,
-        voices,
+        const minTotalWidth = formatter.preCalculateMinTotalWidth(voices);
+        const voiceWidth = minTotalWidth * (voiceWidthFactor || DEFAULT_VOICE_WIDTH_FACTOR);
+
+        return {
+            measures,
+            voices,
+            voiceWidth,
+            width: noteStartX + voiceWidth,
+        }
     }
 }
