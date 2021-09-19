@@ -13,7 +13,13 @@ import type {
 
 // Width factor (min renderable width = 1)
 const VOICE_WIDTH_FACTOR = 2.2;
-const DEFAULT_MAX_WIDTH = 800;
+const DEFAULT_MAX_WIDTH = 500;
+
+type ProcessedSystemMeasure = {
+    measures: MeasureModel[];
+    noteStartX: number;
+    voices: Vex.Flow.Voice[];
+};
 
 /**
  * Create formatted score model from stave configs
@@ -29,48 +35,8 @@ export default function createScore(
     const score: Score = [];
     let currentSystemWidth = 0;
     let currentSystemIndex = 0;
-    systemMeasureConfig.forEach(systemMeasure => {
-        const {
-            measures,
-            voices,
-            noteStartX,
-        } = processSystemMeasures(systemMeasure);
 
-        const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
-        const voiceWidth = minVoiceWidth * VOICE_WIDTH_FACTOR;
-        const width = noteStartX + voiceWidth;
-
-        // TODO: complete
-        if (currentSystemWidth + width > maxSystemWidth) {
-            console.log('need new system');
-            currentSystemWidth = 0;
-            currentSystemIndex++;
-        } else {
-            currentSystemWidth += width;
-        }
-
-        // update staves to calculated width
-        measures.forEach(({stave}) => stave.setWidth(width));
-        // format cross-stave voices (align across x axis)
-        formatter.format(voices, voiceWidth);
-
-        // Assure system entry exists
-        score[currentSystemIndex] = score[currentSystemIndex] || [];
-
-        // Hide begBarLine if first system measure in system
-        if (!score[currentSystemIndex].length) {
-            measures.forEach(m => {
-                m.clearBegBarLine();
-
-                if (currentSystemIndex !== 0) {
-                    m.showTimeSignature();
-                    m.showClef();
-                }
-            });
-        }
-        // need to push this to the correct system within score
-        score[currentSystemIndex].push({measures, width});
-    });
+    systemMeasureConfig.forEach(processSystemMeasure);
 
     return score;
 
@@ -99,9 +65,53 @@ export default function createScore(
             return systemMeasures;
         }, initSystemMeasures);
     }
+
+    function processSystemMeasure(systemMeasure: MeasureConfig[]): void {
+        const {
+            measures,
+            voices,
+            noteStartX,
+        } = processSystemMeasures(systemMeasure);
+
+        const minVoiceWidth = formatter.preCalculateMinTotalWidth(voices);
+        const voiceWidth = minVoiceWidth * VOICE_WIDTH_FACTOR;
+        const width = noteStartX + voiceWidth;
+
+        if (currentSystemWidth + width > maxSystemWidth) {
+            // Not enough space in current system,
+            // we have to start a new one
+            currentSystemWidth = 0;
+            currentSystemIndex++;
+        } else {
+            currentSystemWidth += width;
+        }
+
+        // update measures to newly calculated width
+        measures.forEach(m => m.setWidth(width));
+        // format cross-stave voices (align across x axis)
+        formatter.format(voices, voiceWidth);
+
+        // Assure system entry exists
+        score[currentSystemIndex] = score[currentSystemIndex] || [];
+
+        /**
+         * We'll have to do some sort of post-processing here
+         * to set things like clef & time sig visibility,
+         * and reformat/recreate measures accordingly
+         *
+         * This is just a short-term workaround
+         */
+        if (!score[currentSystemIndex].length) {
+            // Hide begBarLine if first system measure
+            measures.forEach(m => m.clearBegBarLine());
+        }
+
+        // need to push this to the correct system within score
+        score[currentSystemIndex].push({measures, width});
+    }
 }
 
-function processSystemMeasures(systemMeasure: MeasureConfig[]) {
+function processSystemMeasures(systemMeasure: MeasureConfig[]): ProcessedSystemMeasure {
     let noteStartX = 0;
     const voices: VexVoice[] = [];
     const measures = systemMeasure.map(staveMeasure => {

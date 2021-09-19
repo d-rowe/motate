@@ -20,7 +20,7 @@ Default.args = {
             measures: [
                 {
                   chords: [
-                    {pitches: ['c4'], duration: 16},
+                    {pitches: ['c4', 'e4', 'g4'], duration: 16},
                     {pitches: ['c4'], duration: 16},
                     {pitches: ['c4'], duration: 16},
                     {pitches: ['c4'], duration: 16},

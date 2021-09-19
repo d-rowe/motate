@@ -65,6 +65,10 @@ class MeasureModel {
         this.setClef();
     }
 
+    setWidth(width: number) {
+        this.stave.setWidth(width);
+    }
+
     private setBarlines() {
         const {hasBegBarline, hasEndBarline} = this.measure;
         if (!hasBegBarline) {
