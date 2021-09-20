@@ -95,7 +95,9 @@ export default function createScore(
              *       system to fill width entirely
              */
             const prevSystem = score[currentSystemIndex - 1];
-            stretchSystemToFullWidth(prevSystem);
+            if (prevSystem) {
+                stretchSystemToFullWidth(prevSystem);
+            }
         } else {
             currentSystemWidth = nextSystemWidth;
         }
