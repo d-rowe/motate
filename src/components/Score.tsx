@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import styled from '@emotion/styled-base';
+import debounce from 'lodash.debounce';
 import createScore from '../models/createScore';
 import {VerticalContainer} from './base';
 import System from './System';
@@ -10,6 +11,8 @@ import type {Score as ScoreType} from '../models/constants';
 const ScoreContainer = styled(VerticalContainer)`
     width: 100%;
 `;
+
+const RESIZE_DEBOUNCE = 50;
 
 export type Props = {
     staves: StaveType[],
@@ -25,19 +28,21 @@ class Score extends PureComponent<Props, State> {
     private resizeObserver: ResizeObserver;
     private containerRef = React.createRef<HTMLDivElement>();
 
+    static defaultProps = {
+        showInstrumentLabels: true,
+    }
+
     constructor(props: Props) {
         super(props);
         this.state = this.getInitialState();
-        this.resizeObserverCallback = this.resizeObserverCallback.bind(this);
+        this.resizeObserverCallback = debounce(
+                this.resizeObserverCallback,
+                RESIZE_DEBOUNCE
+        ).bind(this);
         this.resizeObserver = new ResizeObserver(this.resizeObserverCallback);
     }
 
-    /**
-     * Update width on container resize
-     *
-     * We should debounce this in the future, but for now
-     * performance is surprisingly good (keeps up with animations)
-     */
+    // Update width on container resize
     private resizeObserverCallback(entries: ResizeObserverEntry[]): void {
         entries.forEach(({contentRect}) => {
             this.setWidth(contentRect.width);
