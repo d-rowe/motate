@@ -9,11 +9,12 @@ import type {
 import type {
     SystemMeasureConfig,
     Score,
+    System,
 } from './constants';
 
 // Width factor (min renderable width = 1)
 const DEFAULT_VOICE_WIDTH_FACTOR = 2.2;
-const DEFAULT_MAX_WIDTH = 700;
+const DEFAULT_MAX_WIDTH = 500;
 
 type CalculatedSystemMeasure = {
     measures: MeasureModel[];
@@ -45,7 +46,6 @@ export default function createScore(
     const score: Score = [];
     let currentSystemWidth = 0;
     let currentSystemIndex = 0;
-
     systemMeasureConfig.forEach(formatSystemMeasure);
 
     return score;
@@ -76,9 +76,9 @@ export default function createScore(
         }, initSystemMeasures);
     }
 
-    function formatSystemMeasure(systemMeasure: MeasureConfig[], measureIndex: number): void {
-        let calculatedSystemMeasure = calculateSystemMeasure(
-            systemMeasure,
+    function formatSystemMeasure(systemMeasureConfig: MeasureConfig[], measureIndex: number): void {
+        let calculatedSystemMeasure = getCalculatedSystemMeasure(
+            systemMeasureConfig,
             measureIndex === 0,
         );
 
@@ -86,18 +86,66 @@ export default function createScore(
         if (nextSystemWidth > maxSystemWidth) {
             // Not enough space in current system,
             // we have to start a new one
-            currentSystemWidth = 0;
+            currentSystemWidth = calculatedSystemMeasure.width;
             currentSystemIndex++;
             // re-calculate system measure with clef and timesig visible
-            calculatedSystemMeasure = calculateSystemMeasure(systemMeasure, true);
+            calculatedSystemMeasure = getCalculatedSystemMeasure(systemMeasureConfig, true);
             /**
              * TODO: re-calculate/format entire last
              *       system to fill width entirely
              */
+            const prevSystem = score[currentSystemIndex - 1];
+            stretchSystemToFullWidth(prevSystem);
         } else {
             currentSystemWidth = nextSystemWidth;
         }
 
+        const {
+            measures,
+            voiceWidth,
+            width,
+        } = calculatedSystemMeasure;
+
+        formatCalculatedSystemMeasure(calculatedSystemMeasure);
+
+        // Assure system entry exists
+        score[currentSystemIndex] = score[currentSystemIndex] || [];
+
+        // need to push this to the correct system within score
+        score[currentSystemIndex].push({
+            measures,
+            width,
+            voiceWidth,
+            config: systemMeasureConfig,
+        });
+    }
+
+    function stretchSystemToFullWidth(system: System): void {
+        let totalWidth = 0;
+        let totalVoiceWidth = 0;
+        system.forEach(sm => {
+            totalWidth += sm.width;
+            totalVoiceWidth += sm.voiceWidth;
+        });
+        // This is space that can't be stretched (ie. cumulative noteStartX)
+        const totalUnchangableWidth = totalWidth - totalVoiceWidth;
+        const targetTotalVoiceWidth = maxSystemWidth - totalUnchangableWidth;
+
+        const voiceWidthFactor = targetTotalVoiceWidth / totalVoiceWidth;
+        system.forEach((systemMeasure, i) => {
+            const isStartOfSystem = i === 0;
+            const calculatedSystemMeasure = getCalculatedSystemMeasure(
+                systemMeasure.config,
+                isStartOfSystem,
+                voiceWidthFactor,
+            );
+            formatCalculatedSystemMeasure(calculatedSystemMeasure);
+        });
+    }
+
+    function formatCalculatedSystemMeasure(
+        calculatedSystemMeasure: CalculatedSystemMeasure
+    ): void {
         const {
             measures,
             voices,
@@ -115,27 +163,9 @@ export default function createScore(
          * format across the entire score
          */
         formatter.format(voices, voiceWidth);
-
-        // Assure system entry exists
-        score[currentSystemIndex] = score[currentSystemIndex] || [];
-
-        /**
-         * We'll have to do some sort of post-processing here
-         * to set things like clef & time sig visibility,
-         * and reformat/recreate measures accordingly
-         *
-         * This is just a short-term workaround
-         */
-        if (!score[currentSystemIndex].length) {
-            // Hide begBarLine if first system measure
-            measures.forEach(m => m.clearBegBarLine());
-        }
-
-        // need to push this to the correct system within score
-        score[currentSystemIndex].push({measures, width});
     }
 
-    function calculateSystemMeasure(
+    function getCalculatedSystemMeasure(
         systemMeasure: MeasureConfig[],
         isStartOfSystem: boolean = false,
         voiceWidthFactor?: number,
@@ -147,6 +177,7 @@ export default function createScore(
                 ...staveMeasure,
                 showClef: isStartOfSystem,
                 showTimeSignature: isStartOfSystem,
+                hasBegBarline: !isStartOfSystem,
             });
             noteStartX = Math.max(measure.stave.getNoteStartX(), noteStartX);
             voices.push(measure.voice);
@@ -154,7 +185,9 @@ export default function createScore(
         });
 
         const minTotalWidth = formatter.preCalculateMinTotalWidth(voices);
-        const voiceWidth = minTotalWidth * (voiceWidthFactor || DEFAULT_VOICE_WIDTH_FACTOR);
+        const voiceWidth = minTotalWidth
+            * DEFAULT_VOICE_WIDTH_FACTOR
+            * (voiceWidthFactor ?? 1);
 
         return {
             measures,

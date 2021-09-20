@@ -10,7 +10,7 @@ const LeftContainer = styled(VerticalContainer)`
     padding: 0 12px 0 0;
     margin: 42px 0;
     text-align: right;
-    border-right: 4px solid black;
+    border-right: 3px solid black;
 `;
 
 const InstrumentLabel = styled.p`
