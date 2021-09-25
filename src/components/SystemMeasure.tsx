@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Measure from './Measure';
 
-import type {SystemMeasure as SystemMeasureType} from '../models/constants';
+import type {SystemMeasure as SystemMeasureType} from '../lib/constants';
 
 /**
  * A measure that can span multiple instruments (or "staves")

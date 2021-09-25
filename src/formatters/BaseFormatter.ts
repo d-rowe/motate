@@ -1,5 +1,5 @@
 import {VexFormatter, VF} from '../constants';
-import MeasureModel from '../models/MeasureModel';
+import MeasureModel from '../lib/MeasureModel';
 
 export type Options = {
     width?: number,

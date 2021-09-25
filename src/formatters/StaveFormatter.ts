@@ -1,5 +1,5 @@
 import BaseFormatter from './BaseFormatter';
-import MeasureModel from '../models/MeasureModel';
+import MeasureModel from '../lib/MeasureModel';
 
 type PreformattedMeasureDimensions = {
     noteStartX: number,

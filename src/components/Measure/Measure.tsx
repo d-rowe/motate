@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import styled from '@emotion/styled';
 import renderer from './renderer';
 
-import type MeasureModel from '../../models/MeasureModel';
+import type MeasureModel from '../../lib/MeasureModel';
 
 const MeasureContainer = styled.div`
     position: relative;

@@ -5,7 +5,7 @@ import SystemMeasure from '../SystemMeasure';
 import {FlexContainer} from '../base';
 
 import type {StaveConfig as StaveType} from '../../constants';
-import type {System as SystemType} from '../../models/constants';
+import type {System as SystemType} from '../../lib/constants';
 
 export type Props = {
     staves: StaveType[],

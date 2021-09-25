@@ -1,12 +1,12 @@
 import React, {PureComponent} from 'react';
 import styled from '@emotion/styled-base';
 import debounce from 'lodash.debounce';
-import createScore from '../models/createScore';
+import createScore from '../lib/createScore';
 import {VerticalContainer} from './base';
 import System from './System';
 
 import type {StaveConfig as StaveType} from '../constants';
-import type {Score as ScoreType} from '../models/constants';
+import type {Score as ScoreType} from '../lib/constants';
 
 const ScoreContainer = styled(VerticalContainer)`
     width: 100%;
