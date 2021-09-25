@@ -12,9 +12,8 @@ import type {
     System,
 } from './constants';
 
-// Width factor (min renderable width = 1)
+// Width factor (1 being min renderable width)
 const DEFAULT_VOICE_WIDTH_FACTOR = 2.2;
-const DEFAULT_MAX_WIDTH = 500;
 
 type CalculatedSystemMeasure = {
     measures: MeasureModel[];
@@ -37,9 +36,8 @@ type CalculatedSystemMeasure = {
  */
 export default function createScore(
     staves: StaveConfig[],
-    width?: number,
+    maxWidth: number,
 ): Score {
-    const maxSystemWidth = width || DEFAULT_MAX_WIDTH;
     const formatter = new VF.Formatter();
     const systemMeasureConfig = getSystemMeasureConfig();
 
@@ -83,7 +81,7 @@ export default function createScore(
         );
 
         const nextSystemWidth = currentSystemWidth + calculatedSystemMeasure.width;
-        if (nextSystemWidth > maxSystemWidth) {
+        if (nextSystemWidth > maxWidth) {
             // Not enough space in current system,
             // we have to start a new one
             currentSystemWidth = calculatedSystemMeasure.width;
@@ -131,7 +129,7 @@ export default function createScore(
         });
         // This is space that can't be stretched (ie. cumulative noteStartX)
         const totalUnchangableWidth = totalWidth - totalVoiceWidth;
-        const targetTotalVoiceWidth = maxSystemWidth - totalUnchangableWidth;
+        const targetTotalVoiceWidth = maxWidth - totalUnchangableWidth;
 
         const voiceWidthFactor = targetTotalVoiceWidth / totalVoiceWidth;
         system.forEach((systemMeasure, i) => {

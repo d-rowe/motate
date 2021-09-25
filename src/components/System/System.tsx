@@ -11,6 +11,7 @@ export type Props = {
     staves: StaveType[],
     system: SystemType,
     showInstrumentLabels: boolean,
+    onInstrumentLabelResize: (width: number) => void,
 };
 
 
@@ -21,12 +22,18 @@ class System extends PureComponent<Props> {
 
 
     render() {
-        const {staves, system, showInstrumentLabels} = this.props;
+        const {
+            staves,
+            system,
+            showInstrumentLabels,
+            onInstrumentLabelResize,
+        } = this.props;
         return (
             <FlexContainer>
                 <Left
                     staves={staves}
                     showInstrumentLabels={showInstrumentLabels}
+                    onInstrumentLabelResize={onInstrumentLabelResize}
                 />
                 <FlexContainer>
                     {system.map((systemMeasure, i) => (

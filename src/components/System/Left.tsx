@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import {VerticalContainer} from '../base';
 
 import type {StaveConfig} from '../../constants';
+
 
 const LeftContainer = styled(VerticalContainer)`
     justify-items: stretch;
@@ -21,23 +22,56 @@ const InstrumentLabel = styled.p`
 type Props = {
     staves: StaveConfig[],
     showInstrumentLabels: boolean,
+    onInstrumentLabelResize: (width: number) => void,
 };
 
-function Left(props: Props) {
-    const {
-        staves,
-        showInstrumentLabels,
-    } = props;
+class Left extends PureComponent<Props> {
+    private resizeObserver: ResizeObserver;
+    private containerRef = React.createRef<HTMLDivElement>();
 
-    return (
-        <LeftContainer>
-            {showInstrumentLabels && staves.map(({name}, i) => (
-                <InstrumentLabel key={i}>
-                    {name}
-                </InstrumentLabel>
-            ))}
-        </LeftContainer>
-    );
+    constructor(props: Props) {
+        super(props);
+        this.resizeObserverCallback = this.resizeObserverCallback.bind(this);
+        this.resizeObserver = new ResizeObserver(this.resizeObserverCallback);
+    }
+
+    componentDidMount() {
+        const container = this.containerRef.current;
+        if (container) {
+            this.resizeObserver.observe(container);
+        }
+    }
+
+    componentWillUnmount() {
+        const container = this.containerRef.current;
+        if (container) {
+            this.resizeObserver.unobserve(container);
+        }
+    }
+
+    private resizeObserverCallback(entries: ResizeObserverEntry[]): void {
+        const {onInstrumentLabelResize} = this.props;
+        entries.forEach(({contentRect}) => {
+            onInstrumentLabelResize(contentRect.width);
+        });
+    }
+
+    render() {
+        const {
+            staves,
+            showInstrumentLabels,
+        } = this.props;
+
+        return (
+            <LeftContainer ref={this.containerRef}>
+                {showInstrumentLabels && staves.map(({name}, i) => (
+                    <InstrumentLabel key={i}>
+                        {name}
+                    </InstrumentLabel>
+                ))}
+            </LeftContainer>
+        );
+    }
 }
 
 export default React.memo(Left);
