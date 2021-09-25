@@ -142,6 +142,10 @@ export default function createScore(
                 voiceWidthFactor,
             );
             formatCalculatedSystemMeasure(calculatedSystemMeasure);
+            // Update references to be reflected in outputted score
+            systemMeasure.measures = calculatedSystemMeasure.measures;
+            systemMeasure.width = calculatedSystemMeasure.width;
+            systemMeasure.voiceWidth = calculatedSystemMeasure.voiceWidth;
         });
     }
 
