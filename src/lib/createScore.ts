@@ -125,7 +125,13 @@ export default function createScore(
             totalWidth += sm.width;
             totalVoiceWidth += sm.voiceWidth;
         });
-        // This is space that can't be stretched (ie. cumulative noteStartX)
+        /**
+         * This is space that can't be stretched (ie. cumulative noteStartX)
+         *
+         * NOTE: This totalUnChangeableWidth appears to be off and causing issues
+         * filling all available width. We may need to "unformat" system measure
+         * before calculating widths
+         */
         const totalUnchangableWidth = totalWidth - totalVoiceWidth;
         const targetTotalVoiceWidth = maxWidth - totalUnchangableWidth;
 
