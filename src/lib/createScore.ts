@@ -44,7 +44,7 @@ export default function createScore(
     const score: Score = [];
     let currentSystemWidth = 0;
     let currentSystemIndex = 0;
-    systemMeasureConfig.forEach(formatSystemMeasure);
+    systemMeasureConfig.forEach(formatAndAppendSystemMeasureToScore);
 
     return score;
 
@@ -74,24 +74,22 @@ export default function createScore(
         }, initSystemMeasures);
     }
 
-    function formatSystemMeasure(systemMeasureConfig: MeasureConfig[], measureIndex: number): void {
+    function formatAndAppendSystemMeasureToScore(systemMeasureConfig: MeasureConfig[], measureIndex: number): void {
         let calculatedSystemMeasure = getCalculatedSystemMeasure(
             systemMeasureConfig,
             measureIndex === 0,
         );
 
         const nextSystemWidth = currentSystemWidth + calculatedSystemMeasure.width;
-        if (nextSystemWidth > maxWidth) {
+        if (nextSystemWidth >= maxWidth) {
             // Not enough space in current system,
             // we have to start a new one
             currentSystemWidth = calculatedSystemMeasure.width;
             currentSystemIndex++;
             // re-calculate system measure with clef and timesig visible
             calculatedSystemMeasure = getCalculatedSystemMeasure(systemMeasureConfig, true);
-            /**
-             * TODO: re-calculate/format entire last
-             *       system to fill width entirely
-             */
+
+            // re-calculate/format entire last system to fill width entirely
             const prevSystem = score[currentSystemIndex - 1];
             if (prevSystem) {
                 stretchSystemToFullWidth(prevSystem);
